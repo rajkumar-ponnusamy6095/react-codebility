@@ -14,7 +14,6 @@ import {
 
 import {
   Link,
-  useNavigate,
 } from "react-router";
 
 import {
@@ -34,8 +33,6 @@ import PlainNavBar from "../../components/PlainNavBar/PlainNavBar";
 import "./Registration.css";
 
 export default function Registration() {
-  const navigate = useNavigate();
-
   const [error, setError] = useState("");
 
   const {
@@ -50,37 +47,8 @@ export default function Registration() {
     mode: "onBlur",
   });
 
-  const onSubmit = async (
-    data: RegistrationFormData
-  ) => {
-    setError("");
-
-    try {
-      /*
-       * Registration API will be added later.
-       *
-       * For now we are just displaying
-       * the submitted data in the console.
-       */
-      console.log("Registration Data:", data);
-
-      /*
-       * Simulate API call.
-       * Replace this with registrationService
-       * when backend registration is implemented.
-       */
-      await new Promise((resolve) =>
-        setTimeout(resolve, 500)
-      );
-
-      navigate("/login");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Registration failed");
-      }
-    }
+  const onSubmit = () => {
+    setError("Self-service registration is not supported by the available API.");
   };
 
   return (

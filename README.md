@@ -73,3 +73,22 @@ export default defineConfig([
 ])
 
 ```
+
+## Backend API
+
+The UI calls the REST API at `http://localhost:3000` by default. Set
+`VITE_API_BASE_URL` to change the origin, for example:
+
+```env
+VITE_API_BASE_URL=https://api.example.com
+```
+
+Authentication sends `{ "email": "...", "password": "..." }` to
+`POST /api/auth/login` and expects `{ "accessToken": "...", "user": {...} }`.
+The token is sent as a bearer token to protected endpoints, and
+`GET /api/auth/me` is used to restore the current user when the app starts.
+User endpoints are expected to return direct JSON user objects or arrays.
+
+The available API does not include self-service registration, so the
+registration form reports that the feature is unavailable instead of simulating
+a successful request.

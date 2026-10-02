@@ -2,11 +2,12 @@ export type Role = "USER" | "ADMIN";
 
 export interface User {
   id: number;
-  username: string;
+  email: string;
   role: Role;
+  name?: string;
 }
 
 export interface LoginResponse {
-  token: string;
+  accessToken: string;
   user: User;
 }

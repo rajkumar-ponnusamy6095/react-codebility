@@ -1,15 +1,43 @@
+import { useEffect, useState } from "react";
 import {
+  Alert,
   Container,
   Row,
   Col,
   Card,
+  Spinner,
   Table,
 } from "react-bootstrap";
 
 import { useAuth } from "../../context/AuthContext";
+import { getUsers } from "../../services/userService";
+import type { User as DirectoryUser } from "../Users/user.types";
 
 export default function Admin() {
   const { user } = useAuth();
+  const [users, setUsers] = useState<DirectoryUser[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        setError("");
+        const response = await getUsers();
+        setUsers(response.data);
+      } catch (loadError) {
+        setError(
+          loadError instanceof Error
+            ? loadError.message
+            : "Failed to load users",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadUsers();
+  }, []);
 
   return (
     <Container className="py-4">
@@ -28,7 +56,7 @@ export default function Admin() {
                 </Card.Title>
 
                 <Card.Text>
-                  {user?.username}
+                  {user?.email}
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -58,6 +86,12 @@ export default function Admin() {
 
           <Card.Body>
 
+            {error && (
+              <Alert variant="danger" role="alert">
+                {error}
+              </Alert>
+            )}
+
             <Table
               striped
               bordered
@@ -67,23 +101,29 @@ export default function Admin() {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Username</th>
+                  <th>Email</th>
                   <th>Role</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>admin</td>
-                  <td>ADMIN</td>
-                </tr>
-
-                <tr>
-                  <td>2</td>
-                  <td>user</td>
-                  <td>USER</td>
-                </tr>
+                {loading ? (
+                  <tr>
+                    <td colSpan={3} className="text-center">
+                      <Spinner animation="border" size="sm" role="status">
+                        <span className="visually-hidden">Loading users...</span>
+                      </Spinner>
+                    </td>
+                  </tr>
+                ) : (
+                  users.map((directoryUser) => (
+                    <tr key={directoryUser.id}>
+                      <td>{directoryUser.id}</td>
+                      <td>{directoryUser.email}</td>
+                      <td>{directoryUser.role}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
 
             </Table>

@@ -29,37 +29,7 @@ const sidebarItems: SidebarItem[] = [
     label: "Users",
     path: "/users",
     icon: "bi-people-fill",
-  },
-  {
-    label: "Companies",
-    path: "/companies",
-    icon: "bi-buildings-fill",
-  },
-  {
-    label: "Account",
-    path: "/account",
-    icon: "bi-person-vcard-fill",
-  },
-  {
-    label: "Settings",
-    path: "/settings",
-    icon: "bi-gear-fill",
-  },
-  {
-    label: "Login",
-    path: "/login",
-    icon: "bi-box-arrow-in-right",
-  },
-  {
-    label: "Register",
-    path: "/register",
-    icon: "bi-person-plus-fill",
-  },
-  {
-    label: "Error",
-    path: "/404",
-    icon: "bi-exclamation-circle-fill",
-  },
+  }  
 ];
 
 export default function Sidebar({ isOpen }: SidebarProps) {
@@ -94,7 +64,10 @@ export default function Sidebar({ isOpen }: SidebarProps) {
 
         {sidebarItems.map((item) => {
           const isActive =
-            location.pathname === item.path;
+            location.pathname !== "/profile" &&
+            (location.pathname === item.path ||
+              (item.path === "/users" &&
+                location.pathname.startsWith("/users/")));
 
           return (
             <Nav.Link

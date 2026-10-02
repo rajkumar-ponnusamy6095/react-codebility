@@ -106,6 +106,13 @@
   gap: 0.6rem;
   padding-right: 1rem;
   border-right: 1px solid var(--app-border);
+  color: #fff;
+  text-decoration: none;
+}
+
+.app-navbar-user:hover,
+.app-navbar-user:focus {
+  color: var(--app-primary-light);
 }
 
 .app-navbar-avatar {
@@ -122,7 +129,7 @@
   font-weight: 700;
 }
 
-.app-navbar .app-navbar-username {
+.app-navbar .app-navbar-name {
   max-width: 180px;
   overflow: hidden;
   color: #fff;
@@ -130,6 +137,11 @@
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.app-navbar-user:hover .app-navbar-name,
+.app-navbar-user:focus .app-navbar-name {
+  color: var(--app-primary-light);
 }
 
 .app-navbar .app-navbar-logout {
@@ -201,7 +213,7 @@
     flex-wrap: wrap;
   }
 
-  .app-navbar .app-navbar-username {
+  .app-navbar .app-navbar-name {
     max-width: calc(100vw - 180px);
   }
 }

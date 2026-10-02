@@ -11,26 +11,30 @@ import {
 import { useNavigate, useParams } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import isNil from "lodash/isNil";
 
-import { createUser, getUsers, updateUser } from "../../services/userService";
-import { userSchema, type UserFormData } from "./user.schema";
+import { createUser, getUser, updateUser } from "../../services/userService";
+import {
+  DEPARTMENTS,
+  userSchema,
+  type UserFormData,
+} from "./user.schema";
 import type { User } from "./user.types";
 
 import "./Users.css";
 
-const initialFormData: UserFormData = {
-  firstName: "",
-  lastName: "",
+const initialFormData: Omit<UserFormData, "department"> = {
+  name: "",
   email: "",
-  mobileNumber: "",
-  role: "USER",
-  status: "ACTIVE",
+  phone: "",
+  role: "user",
+  status: "active",
 };
 
 export default function UserForm() {
   const navigate = useNavigate();
   const { userId } = useParams();
-  const isEditing = userId !== undefined;
+  const isEditing = !isNil(userId);
   const [loading, setLoading] = useState(isEditing);
   const [loadError, setLoadError] = useState("");
   const [formError, setFormError] = useState("");
@@ -58,26 +62,29 @@ export default function UserForm() {
       try {
         setLoading(true);
         setLoadError("");
+        if (isNil(userId)) {
+          throw new Error("A user ID is required to edit a user.");
+        }
+
         const id = Number(userId);
         if (!Number.isSafeInteger(id) || id <= 0) {
           throw new Error("User not found");
         }
 
-        const users = await getUsers();
-        const user = users.find((entry) => entry.id === id);
-        if (!user) {
-          throw new Error("User not found");
-        }
+        const user = await getUser(id);
 
         if (isActive) {
+          const department = DEPARTMENTS.find(
+            (option) => option === user.department,
+          );
           setEditingUser(user);
           reset({
-            firstName: user.firstName,
-            lastName: user.lastName,
+            name: user.name,
             email: user.email,
-            mobileNumber: user.mobileNumber,
+            phone: user.phone,
             role: user.role,
             status: user.status,
+            ...(department === undefined ? {} : { department }),
           });
         }
       } catch (error) {
@@ -101,14 +108,22 @@ export default function UserForm() {
   }, [isEditing, reset, userId]);
 
   const handleSave = async (data: UserFormData) => {
+    if (isEditing && isNil(editingUser)) {
+      setFormError("The user to update is unavailable. Please reload the page.");
+      return;
+    }
+
     try {
       setFormError("");
-      if (editingUser) {
-        await updateUser(editingUser.id, data);
-      } else {
-        await createUser(data);
-      }
-      navigate("/users");
+      const action = editingUser ? "updated" : "created";
+      const savedUser = editingUser
+        ? await updateUser(editingUser.id, data)
+        : await createUser(data);
+      navigate("/users", {
+        state: {
+          userNotification: `User "${savedUser.name}" ${action} successfully.`,
+        },
+      });
     } catch (error) {
       setFormError(
         error instanceof Error ? error.message : "Failed to save user",
@@ -152,35 +167,19 @@ export default function UserForm() {
             <Form onSubmit={handleSubmit(handleSave)} noValidate>
               <Row>
                 <Col md={6}>
-                  <Form.Group className="mb-3" controlId="user-first-name">
-                    <Form.Label>First Name</Form.Label>
+                  <Form.Group className="mb-3" controlId="user-name">
+                    <Form.Label>Name</Form.Label>
                     <Form.Control
                       type="text"
-                      {...register("firstName")}
-                      isInvalid={!!errors.firstName}
+                      {...register("name")}
+                      isInvalid={!!errors.name}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.firstName?.message}
+                      {errors.name?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
 
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="user-last-name">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      {...register("lastName")}
-                      isInvalid={!!errors.lastName}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.lastName?.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="user-email">
                     <Form.Label>Email</Form.Label>
@@ -194,19 +193,41 @@ export default function UserForm() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
+              </Row>
 
+              <Row>
                 <Col md={6}>
-                  <Form.Group className="mb-3" controlId="user-mobile-number">
-                    <Form.Label>Mobile Number</Form.Label>
+                  <Form.Group className="mb-3" controlId="user-phone">
+                    <Form.Label>Phone</Form.Label>
                     <Form.Control
                       type="tel"
                       maxLength={10}
-                      placeholder="Enter 10-digit mobile number"
-                      {...register("mobileNumber")}
-                      isInvalid={!!errors.mobileNumber}
+                      placeholder="Enter 10-digit phone number"
+                      {...register("phone")}
+                      isInvalid={!!errors.phone}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.mobileNumber?.message}
+                      {errors.phone?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="user-department">
+                    <Form.Label>Department</Form.Label>
+                    <Form.Select
+                      {...register("department")}
+                      isInvalid={!!errors.department}
+                    >
+                      <option value="">Select a department</option>
+                      {DEPARTMENTS.map((department) => (
+                        <option key={department} value={department}>
+                          {department}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.department?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -220,8 +241,8 @@ export default function UserForm() {
                       {...register("role")}
                       isInvalid={!!errors.role}
                     >
-                      <option value="USER">USER</option>
-                      <option value="ADMIN">ADMIN</option>
+                      <option value="user">user</option>
+                      <option value="admin">admin</option>
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {errors.role?.message}
@@ -236,8 +257,8 @@ export default function UserForm() {
                       {...register("status")}
                       isInvalid={!!errors.status}
                     >
-                      <option value="ACTIVE">ACTIVE</option>
-                      <option value="INACTIVE">INACTIVE</option>
+                      <option value="active">active</option>
+                      <option value="inactive">inactive</option>
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
                       {errors.status?.message}

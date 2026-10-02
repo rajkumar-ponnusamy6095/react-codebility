@@ -65,13 +65,13 @@ export default function Login() {
 
     try {
       const response = await loginApi(
-        data.username,
+        data.email,
         data.password
       );
 
       login(response);
 
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -126,24 +126,24 @@ export default function Login() {
                   noValidate
                 >
 
-                  {/* Username */}
+                  {/* Email */}
                   <Form.Group
                     className="mb-3"
-                    controlId="username"
+                    controlId="email"
                   >
                     <Form.Label>
-                      Username
+                      Email
                     </Form.Label>
 
                     <Form.Control
-                      type="text"
-                      placeholder="Enter username"
-                      {...register("username")}
-                      isInvalid={!!errors.username}
+                      type="email"
+                      placeholder="Enter email"
+                      {...register("email")}
+                      isInvalid={!!errors.email}
                     />
 
                     <Form.Control.Feedback type="invalid">
-                      {errors.username?.message}
+                      {errors.email?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
 

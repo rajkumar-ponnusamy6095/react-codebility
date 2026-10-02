@@ -1,0 +1,51 @@
+.profile-page {
+  min-height: calc(100vh - 56px);
+  padding: 28px;
+  background: var(--app-bg);
+}
+
+.profile-header {
+  margin-bottom: 24px;
+}
+
+.profile-header h1 {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.profile-header p {
+  margin: 5px 0 0;
+  color: var(--app-muted);
+  font-size: 0.9rem;
+}
+
+.profile-card {
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+}
+
+.profile-card .card-body {
+  padding: 20px;
+}
+
+.profile-loading {
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--app-muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 767px) {
+  .profile-page {
+    padding: 20px 15px;
+  }
+}

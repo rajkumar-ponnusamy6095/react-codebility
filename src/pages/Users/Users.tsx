@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useMemo,
-} from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Alert,
@@ -17,34 +13,41 @@ import {
   Spinner,
   Table,
 } from "react-bootstrap";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import isNil from "lodash/isNil";
 
+import NotificationToast from "../../components/NotificationToast/NotificationToast";
 import {
   deleteUser,
   getUsers,
 } from "../../services/userService";
+import { datePipe } from "../../utils/datePipe";
 
 import type {
   User,
+  UserPagination,
+  UserRole,
+  UserSortOrder,
+  UserStatus,
 } from "./user.types";
 
 import "./Users.css";
 
-type SortField =
-  | "id"
-  | "firstName"
-  | "email"
-  | "role"
-  | "status"
-  | "createdAt";
-
-type SortDirection = "asc" | "desc";
+type SortField = keyof User;
+type SortDirection = UserSortOrder;
 
 const PAGE_SIZE_OPTIONS = [5, 10, 25, 100] as const;
 
 export default function Users() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [users, setUsers] = useState<User[]>([]);
+  const [pagination, setPagination] = useState<UserPagination>({
+    page: 1,
+    limit: PAGE_SIZE_OPTIONS[0],
+    total: 0,
+    totalPages: 1,
+  });
 
   const [loading, setLoading] =
     useState(true);
@@ -54,6 +57,15 @@ export default function Users() {
 
   const [search, setSearch] =
     useState("");
+
+  const [debouncedSearch, setDebouncedSearch] =
+    useState(search);
+
+  const [role, setRole] = useState<UserRole | "">("");
+
+  const [status, setStatus] = useState<UserStatus | "">("");
+
+  const [department, setDepartment] = useState("");
 
   const [sortField, setSortField] =
     useState<SortField>("id");
@@ -66,123 +78,97 @@ export default function Users() {
 
   const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_OPTIONS[0]);
 
-  const [deleteUserId, setDeleteUserId] =
-    useState<number | null>(null);
+  const [refreshVersion, setRefreshVersion] = useState(0);
+
+  const [userToDelete, setUserToDelete] =
+    useState<Pick<User, "id" | "name"> | null>(null);
+
+  const [notification, setNotification] = useState("");
+
+  useEffect(() => {
+    const state = location.state;
+    if (
+      typeof state !== "object" ||
+      state === null ||
+      !("userNotification" in state) ||
+      typeof state.userNotification !== "string"
+    ) {
+      return;
+    }
+
+    setNotification(state.userNotification);
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, location.state, navigate]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 900);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
 
   /*
-   * Load users
+   * Load the requested users page
    */
   useEffect(() => {
-    loadUsers();
-  }, []);
+    let isActive = true;
+    const controller = new AbortController();
 
-  const loadUsers = async () => {
-    try {
-      setLoading(true);
-      setError("");
+    const loadUsers = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const response = await getUsers(
+          {
+            page: currentPage,
+            limit: pageSize,
+            search: debouncedSearch.trim() || undefined,
+            sortBy: sortField,
+            sortOrder: sortDirection,
+            role: role || undefined,
+            status: status || undefined,
+            department: department || undefined,
+          },
+          controller.signal,
+        );
 
-      const data = await getUsers();
-
-      setUsers(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Failed to load users");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /*
-   * Search + Sort
-   */
-  const filteredAndSortedUsers = useMemo(() => {
-    const searchValue =
-      search.trim().toLowerCase();
-
-    let result = users.filter((user) => {
-      if (!searchValue) {
-        return true;
-      }
-
-      return (
-        user.firstName
-          .toLowerCase()
-          .includes(searchValue) ||
-        user.lastName
-          .toLowerCase()
-          .includes(searchValue) ||
-        user.email
-          .toLowerCase()
-          .includes(searchValue) ||
-        user.mobileNumber.includes(
-          searchValue
-        ) ||
-        user.role
-          .toLowerCase()
-          .includes(searchValue) ||
-        user.status
-          .toLowerCase()
-          .includes(searchValue)
-      );
-    });
-
-    result = [...result].sort(
-      (a, b) => {
-        const aValue = a[sortField];
-        const bValue = b[sortField];
-
-        if (
-          typeof aValue === "string" &&
-          typeof bValue === "string"
-        ) {
-          const comparison =
-            aValue.localeCompare(
-              bValue
-            );
-
-          return sortDirection === "asc"
-            ? comparison
-            : -comparison;
+        if (isActive) {
+          setUsers(response.data);
+          setPagination(response.pagination);
         }
-
-        if (
-          typeof aValue === "number" &&
-          typeof bValue === "number"
-        ) {
-          return sortDirection === "asc"
-            ? aValue - bValue
-            : bValue - aValue;
+      } catch (error: unknown) {
+        if (isActive) {
+          setError(
+            error instanceof Error ? error.message : "Failed to load users",
+          );
         }
-
-        return 0;
+      } finally {
+        if (isActive) {
+          setLoading(false);
+        }
       }
-    );
+    };
 
-    return result;
+    void loadUsers();
+
+    return () => {
+      isActive = false;
+      controller.abort();
+    };
   }, [
-    users,
-    search,
-    sortField,
+    currentPage,
+    department,
+    pageSize,
+    refreshVersion,
+    role,
+    debouncedSearch,
     sortDirection,
+    sortField,
+    status,
   ]);
 
-  /*
-   * Pagination
-   */
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredAndSortedUsers.length / pageSize),
-  );
-
-  const paginatedUsers =
-    filteredAndSortedUsers.slice(
-      (currentPage - 1) *
-        pageSize,
-      currentPage * pageSize
-    );
+  const totalPages = Math.max(1, pagination.totalPages);
 
   /*
    * Change sorting
@@ -255,41 +241,27 @@ export default function Users() {
    * Delete
    */
   const handleDelete = async () => {
-    if (deleteUserId === null) {
+    if (isNil(userToDelete)) {
+      setError("Select a user before deleting.");
       return;
     }
 
     try {
       setError("");
 
-      await deleteUser(
-        deleteUserId
-      );
-
-      setUsers((current) =>
-        current.filter(
-          (user) =>
-            user.id !== deleteUserId
-        )
-      );
-
-      setDeleteUserId(null);
-
-      /*
-       * If deleting the last item
-       * on a page, move back.
-       */
-      const remainingItems =
-        filteredAndSortedUsers.length - 1;
+      await deleteUser(userToDelete.id);
+      setUserToDelete(null);
+      setNotification(`User "${userToDelete.name}" deleted successfully.`);
 
       const newTotalPages = Math.max(
         1,
-        Math.ceil(remainingItems / pageSize),
+        Math.ceil((pagination.total - 1) / pageSize),
       );
 
       if (currentPage > newTotalPages) {
         setCurrentPage(Math.max(1, newTotalPages));
       }
+      setRefreshVersion((version) => version + 1);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -300,12 +272,12 @@ export default function Users() {
   };
 
   const firstVisibleUser =
-    filteredAndSortedUsers.length === 0
+    pagination.total === 0
       ? 0
       : (currentPage - 1) * pageSize + 1;
   const lastVisibleUser = Math.min(
     currentPage * pageSize,
-    filteredAndSortedUsers.length,
+    pagination.total,
   );
 
   const visiblePages = Array.from(
@@ -394,6 +366,13 @@ export default function Users() {
         </Alert>
       )}
 
+      {notification && (
+        <NotificationToast
+          message={notification}
+          onClose={() => setNotification("")}
+        />
+      )}
+
       <Card className="users-card">
 
         <Card.Body>
@@ -423,15 +402,68 @@ export default function Users() {
               className="text-md-end mt-2 mt-md-0"
             >
               <span className="users-count">
-                {filteredAndSortedUsers.length}{" "}
+                {pagination.total}{" "}
                 user
-                {filteredAndSortedUsers.length !==
+                {pagination.total !==
                 1
                   ? "s"
                   : ""}
               </span>
             </Col>
 
+          </Row>
+
+          <Row className="mb-3">
+            <Col xs={12} md={4} className="mb-2 mb-md-0">
+              <Form.Select
+                aria-label="Filter users by role"
+                value={role}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setRole(value === "user" || value === "admin" ? value : "");
+                  setCurrentPage(1);
+                }}
+              >
+                <option value="">All roles</option>
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </Form.Select>
+            </Col>
+            <Col xs={12} md={4} className="mb-2 mb-md-0">
+              <Form.Select
+                aria-label="Filter users by status"
+                value={status}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setStatus(
+                    value === "active" || value === "inactive" ? value : "",
+                  );
+                  setCurrentPage(1);
+                }}
+              >
+                <option value="">All statuses</option>
+                <option value="active">active</option>
+                <option value="inactive">inactive</option>
+              </Form.Select>
+            </Col>
+            <Col xs={12} md={4}>
+              <Form.Select
+                aria-label="Filter users by department"
+                value={department}
+                onChange={(event) => {
+                  setDepartment(event.target.value);
+                  setCurrentPage(1);
+                }}
+              >
+                <option value="">All Departments</option>
+                <option value="Finance">Finance</option>
+                <option value="HR">HR</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Administration">Administration</option>
+                <option value="operation">Operations</option>
+                <option value="Marketing">Marketing</option>
+              </Form.Select>
+            </Col>
           </Row>
 
           {/* Table */}
@@ -466,14 +498,14 @@ export default function Users() {
                     <th
                       onClick={() =>
                         handleSort(
-                          "firstName"
+                          "name"
                         )
                       }
                       className="sortable"
                     >
                       Name{" "}
                       {getSortIcon(
-                        "firstName"
+                        "name"
                       )}
                     </th>
 
@@ -490,7 +522,17 @@ export default function Users() {
                     </th>
 
                     <th>
-                      Mobile
+                      Phone
+                    </th>
+
+                    <th
+                      onClick={() =>
+                        handleSort("department")
+                      }
+                      className="sortable"
+                    >
+                      Department{" "}
+                      {getSortIcon("department")}
                     </th>
 
                     <th
@@ -542,18 +584,18 @@ export default function Users() {
 
                 <tbody>
 
-                  {paginatedUsers.length ===
+                  {users.length ===
                   0 ? (
                     <tr>
                       <td
-                        colSpan={8}
+                        colSpan={9}
                         className="text-center py-5"
                       >
                         No users found
                       </td>
                     </tr>
                   ) : (
-                    paginatedUsers.map(
+                    users.map(
                       (user) => (
                         <tr
                           key={user.id}
@@ -565,8 +607,7 @@ export default function Users() {
 
                           <td>
                             <div className="user-name">
-                              {user.firstName}{" "}
-                              {user.lastName}
+                              {user.name}
                             </div>
                           </td>
 
@@ -576,18 +617,22 @@ export default function Users() {
 
                           <td>
                             {
-                              user.mobileNumber
+                              user.phone
                             }
                           </td>
 
                           <td>
+                            {user.department}
+                          </td>
+
+                          <td className="user-role">
                             {user.role}
                           </td>
 
-                          <td>
+                          <td className="user-status">
                             <Badge
-                              bg={user.status === "INACTIVE" ? "secondary" : undefined}
-                              className={user.status === "ACTIVE" ? "status-badge-active" : undefined}
+                              bg={user.status === "inactive" ? "secondary" : undefined}
+                              className={user.status === "active" ? "status-badge-active" : undefined}
                             >
                               {
                                 user.status
@@ -597,7 +642,7 @@ export default function Users() {
 
                           <td>
                             {
-                              user.createdAt
+                              datePipe(user.createdAt)
                             }
                           </td>
 
@@ -621,9 +666,10 @@ export default function Users() {
                                 size="sm"
                                 variant="outline-danger"
                                 onClick={() =>
-                                  setDeleteUserId(
-                                    user.id
-                                  )
+                                  setUserToDelete({
+                                    id: user.id,
+                                    name: user.name,
+                                  })
                                 }
                               >
                                 <i className="bi bi-trash3 me-1" aria-hidden="true" />
@@ -673,7 +719,7 @@ export default function Users() {
 
             <span className="page-info">
               Showing {firstVisibleUser}–{lastVisibleUser} of{" "}
-              {filteredAndSortedUsers.length} users
+              {pagination.total} users
             </span>
 
             {totalPages > 1 && (
@@ -699,9 +745,9 @@ export default function Users() {
 
       {/* Delete Confirmation */}
       <Modal
-        show={deleteUserId !== null}
+        show={userToDelete !== null}
         onHide={() =>
-          setDeleteUserId(null)
+          setUserToDelete(null)
         }
         centered
       >
@@ -712,8 +758,7 @@ export default function Users() {
         </Modal.Header>
 
         <Modal.Body>
-          Are you sure you want to delete
-          this user?
+          Are you sure you want to delete {userToDelete?.name}?
         </Modal.Body>
 
         <Modal.Footer>
@@ -721,7 +766,7 @@ export default function Users() {
           <Button
             variant="secondary"
             onClick={() =>
-              setDeleteUserId(null)
+              setUserToDelete(null)
             }
           >
             Cancel

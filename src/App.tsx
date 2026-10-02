@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 
 import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -15,6 +15,7 @@ import ServerError from "./pages/errors/ServerError";
 import NotFound from "./pages/errors/NotFound";
 import Users from "./pages/Users/Users";
 import UserForm from "./pages/Users/UserForm";
+import Profile from "./pages/Profile/Profile";
 import AppLayout from "./components/AppLayout/AppLayout";
 
 export default function App() {
@@ -29,8 +30,11 @@ export default function App() {
       {/* Protected Routes */}
 
       <Route element={<ProtectedRoute />}>
+        <Route index element={<Navigate to="/dashboard" replace />} />
+
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
 
           {/* ADMIN only */}
 

@@ -138,9 +138,13 @@
 }
 
 .sidebar-link.active {
-  background: rgba(99, 102, 241, 0.12);
-
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--app-primary) 24%, transparent),
+    color-mix(in srgb, var(--app-primary) 12%, transparent)
+  );
   color: var(--app-primary) !important;
+  font-weight: 700;
 }
 
 .sidebar-link.active .sidebar-icon {
