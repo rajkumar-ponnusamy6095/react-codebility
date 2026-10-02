@@ -1,0 +1,38 @@
+.dashboard-page {
+  --dashboard-sidebar-width: 240px;
+  position: relative;
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+  background: var(--app-bg);
+}
+
+.dashboard-main {
+  min-width: 0;
+  min-height: calc(100vh - 64px);
+  margin-left: 0;
+  transition: margin-left 0.25s ease;
+}
+
+.dashboard-page.sidebar-open .dashboard-main {
+  margin-left: var(--dashboard-sidebar-width);
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .dashboard-page.sidebar-open .dashboard-main {
+    margin-left: 0;
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    z-index: 1010;
+    inset: 64px 0 0;
+    display: block;
+    width: 100%;
+    border: 0;
+    background: rgba(15, 23, 42, 0.45);
+  }
+}

@@ -1,0 +1,15 @@
+.error-page__content {
+  min-height: calc(100vh - 56px);
+  padding-block: 2rem;
+  background-color: var(--app-bg);
+}
+
+.error-page__row {
+  min-height: calc(100vh - 56px - 4rem);
+}
+
+@media (max-width: 575.98px) {
+  .error-page__row {
+    min-height: 0;
+  }
+}

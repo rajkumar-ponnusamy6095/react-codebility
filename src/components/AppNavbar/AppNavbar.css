@@ -1,0 +1,207 @@
+.app-navbar {
+  position: relative;
+  z-index: 1030;
+  min-height: 64px;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--app-border);
+  transition:
+    background 0.25s ease,
+    width 0.25s ease,
+    margin-left 0.25s ease;
+  background: var(--app-primary-dark) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--app-primary-dark) 25%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--app-primary-dark) 80%, #000);
+}
+
+.dashboard-navbar.sidebar-open {
+  width: calc(100% - 240px);
+  margin-left: 240px;
+}
+
+.app-navbar .navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-right: 1.5rem;
+  color: #fff !important;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.app-navbar .navbar-brand:hover,
+.app-navbar .navbar-brand:focus {
+  color: var(--app-primary-light) !important;
+}
+
+.app-navbar-brand-mark {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--app-gradient-start),
+    var(--app-gradient-end)
+  );
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--app-primary) 25%, transparent);
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.app-navbar .navbar-toggler {
+  padding: 0.35rem 0.55rem;
+  border-color: color-mix(in srgb, #fff 55%, transparent);
+  color: #fff;
+}
+
+.app-navbar .navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
+
+.app-navbar .navbar-toggler:hover,
+.app-navbar .navbar-toggler:focus {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--app-primary) 20%, transparent);
+}
+
+.app-navbar .navbar-collapse {
+  align-items: center;
+}
+
+.app-navbar .theme-switcher .dropdown-toggle {
+  border-color: color-mix(in srgb, var(--app-primary) 35%, transparent);
+  background-color: var(--app-primary-light);
+  color: var(--app-primary-dark);
+  font-weight: 600;
+}
+
+.app-navbar .theme-switcher .dropdown-toggle:hover,
+.app-navbar .theme-switcher .dropdown-toggle:focus,
+.app-navbar .theme-switcher .dropdown-toggle.show {
+  border-color: var(--app-primary-dark);
+  background-color: var(--app-primary-dark);
+  color: #fff;
+}
+
+.app-navbar .theme-switcher .dropdown-item.active,
+.app-navbar .theme-switcher .dropdown-item:active {
+  background-color: var(--app-primary);
+  color: #fff;
+}
+
+.app-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.app-navbar-user {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.6rem;
+  padding-right: 1rem;
+  border-right: 1px solid var(--app-border);
+}
+
+.app-navbar-avatar {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--app-primary-light);
+  color: var(--app-primary-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.app-navbar .app-navbar-username {
+  max-width: 180px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-navbar .app-navbar-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  border-color: color-mix(in srgb, #fff 60%, transparent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.app-navbar .app-navbar-logout:hover,
+.app-navbar .app-navbar-logout:focus {
+  border-color: #fff;
+  background: #fff;
+  color: var(--app-primary-dark);
+}
+
+.app-navbar .sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.app-navbar .sidebar-toggle:hover,
+.app-navbar .sidebar-toggle:focus {
+  color: var(--app-primary-light);
+}
+
+.sidebar-toggle-icon {
+  display: flex;
+  width: 20px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-toggle-icon span {
+  height: 2px;
+  border-radius: 2px;
+  background-color: currentColor;
+}
+
+@media (max-width: 991px) {
+  .dashboard-navbar.sidebar-open {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .app-navbar-actions {
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-left: 0 !important;
+    padding: 0.85rem 0 0.25rem;
+  }
+
+  .app-navbar-user {
+    padding-right: 0;
+    border-right: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .app-navbar-actions {
+    flex-wrap: wrap;
+  }
+
+  .app-navbar .app-navbar-username {
+    max-width: calc(100vw - 180px);
+  }
+}

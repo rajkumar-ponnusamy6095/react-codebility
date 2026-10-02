@@ -1,0 +1,160 @@
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 240px;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #172033;
+
+  color: #ffffff;
+
+  z-index: 1040;
+  transform: translateX(0);
+  transition:
+    transform 0.25s ease,
+    visibility 0s;
+}
+
+.dashboard-page:not(.sidebar-open) .app-sidebar {
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition:
+    transform 0.25s ease,
+    visibility 0s linear 0.25s;
+}
+
+/* -------------------------------
+   Logo
+-------------------------------- */
+
+.sidebar-logo {
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 20px;
+}
+
+.sidebar-logo-mark {
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #6366f1;
+
+  font-size: 18px;
+
+  transform: rotate(-15deg);
+}
+
+/* -------------------------------
+   Workspace
+-------------------------------- */
+
+.sidebar-workspace {
+  position: relative;
+
+  margin: 4px 12px 18px;
+
+  padding: 10px 12px;
+
+  border-radius: 7px;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.workspace-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  color: #ffffff;
+}
+
+.workspace-environment {
+  margin-top: 2px;
+
+  font-size: 0.65rem;
+
+  color: #8b96a9;
+}
+
+.workspace-arrow {
+  position: absolute;
+
+  right: 10px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #7f8ba0;
+
+  font-size: 0.75rem;
+}
+
+/* -------------------------------
+   Navigation
+-------------------------------- */
+
+.sidebar-nav {
+  padding: 0 12px;
+}
+
+.sidebar-link {
+  display: flex !important;
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 4px;
+
+  padding: 8px 10px !important;
+
+  border-radius: 5px;
+
+  color: #9ca7b8 !important;
+
+  font-size: 0.72rem;
+  font-weight: 500;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+
+  color: #ffffff !important;
+}
+
+.sidebar-link.active {
+  background: rgba(99, 102, 241, 0.12);
+
+  color: var(--app-primary) !important;
+}
+
+.sidebar-link.active .sidebar-icon {
+  color: var(--app-primary);
+}
+
+.sidebar-icon {
+  width: 17px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #8c97aa;
+
+  font-size: 0.75rem;
+}

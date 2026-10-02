@@ -1,0 +1,425 @@
+.dashboard-container {
+  padding: 28px;
+}
+
+/* --------------------------------
+   Header
+-------------------------------- */
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.dashboard-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------
+   Common Card
+-------------------------------- */
+
+.dashboard-card {
+  border: 1px solid #eef0f4;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+}
+
+/* --------------------------------
+   Statistics
+-------------------------------- */
+
+.stat-card {
+  min-height: 150px;
+}
+
+.stat-card .card-body {
+  padding: 20px;
+}
+
+.stat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stat-title {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-value {
+  margin-top: 7px;
+  color: var(--app-text);
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  background: var(--app-primary);
+  color: white;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.stat-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 18px;
+
+  font-size: 0.72rem;
+}
+
+.change-positive {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.change-negative {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.change-description {
+  color: #94a3b8;
+}
+
+/* --------------------------------
+   Task Progress
+-------------------------------- */
+
+.task-progress {
+  margin-top: 18px;
+}
+
+.task-progress .progress {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: var(--app-primary-light);
+}
+
+.task-progress .progress-bar {
+  background-color: var(--app-primary);
+}
+
+/* --------------------------------
+   Chart Header
+-------------------------------- */
+
+.chart-card .card-body,
+.traffic-card .card-body {
+  padding: 20px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.chart-header h5 {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.chart-header span {
+  display: block;
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+.sync-button {
+  border: 0;
+  background: transparent;
+  color: var(--app-text);
+
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.sync-button:hover {
+  color: var(--app-primary);
+}
+
+/* --------------------------------
+   Sales Chart
+-------------------------------- */
+
+.sales-chart {
+  display: flex;
+  height: 260px;
+}
+
+.chart-y-axis {
+  width: 42px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding-bottom: 27px;
+
+  color: #94a3b8;
+  font-size: 0.62rem;
+  text-align: right;
+}
+
+.chart-area {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  margin-left: 10px;
+}
+
+.chart-grid {
+  position: absolute;
+  inset: 0 0 27px 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chart-grid span {
+  width: 100%;
+  border-top: 1px dashed #e8ebf0;
+}
+
+.bars {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+
+  padding: 0 8px;
+}
+
+.bar-group {
+  position: relative;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  max-width: 60px;
+}
+
+.bar-wrapper {
+  width: 100%;
+  height: calc(100% - 27px);
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+}
+
+.bar {
+  width: 7px;
+  min-height: 2px;
+
+  border-radius: 3px 3px 0 0;
+
+  transition:
+    height 0.3s ease,
+    opacity 0.2s ease;
+}
+
+.bar-primary {
+  background: var(--app-primary);
+}
+
+.bar-secondary {
+  background: var(--app-primary-light);
+}
+
+.bar:hover {
+  opacity: 0.75;
+}
+
+.bar-label {
+  height: 27px;
+
+  display: flex;
+  align-items: flex-end;
+
+  color: #94a3b8;
+  font-size: 0.62rem;
+}
+
+/* --------------------------------
+   Traffic
+-------------------------------- */
+
+.traffic-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 8px 0 20px;
+}
+
+.donut-chart {
+  position: relative;
+
+  width: 165px;
+  height: 165px;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      var(--app-primary) 0deg 227deg,
+      var(--app-primary-light) 227deg 281deg,
+      var(--app-gradient-end) 281deg 360deg
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-hole {
+  width: 105px;
+  height: 105px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-hole strong {
+  color: var(--app-text);
+  font-size: 1.15rem;
+}
+
+.donut-hole span {
+  margin-top: 2px;
+  color: #94a3b8;
+  font-size: 0.68rem;
+}
+
+.traffic-legend {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  border-top: 1px solid #eef0f4;
+
+  padding-top: 18px;
+}
+
+.traffic-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+
+  color: var(--app-text);
+
+  font-size: 0.7rem;
+}
+
+.traffic-item strong {
+  font-size: 0.72rem;
+}
+
+.traffic-item > span {
+  color: #94a3b8;
+  font-size: 0.68rem;
+}
+
+.traffic-icon {
+  font-size: 1rem;
+}
+
+.traffic-desktop {
+  color: var(--app-primary);
+}
+
+.traffic-tablet {
+  color: var(--app-gradient-end);
+}
+
+.traffic-phone {
+  color: #64748b;
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 991px) {
+  .dashboard-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 575px) {
+  .dashboard-container {
+    padding: 15px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .stat-card {
+    min-height: 135px;
+  }
+
+  .sales-chart {
+    height: 220px;
+  }
+
+  .donut-chart {
+    width: 145px;
+    height: 145px;
+  }
+
+  .donut-hole {
+    width: 92px;
+    height: 92px;
+  }
+}
