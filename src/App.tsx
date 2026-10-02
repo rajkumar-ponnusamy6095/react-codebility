@@ -1,71 +1,79 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router";
-
-import Login from "./pages/Login/Login";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Admin from "./pages/Admin/Admin";
 
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import RoleRoute from "./components/RoleRoute/RoleRoute";
-import Registration from "./pages/Registration/Registration";
 
-import BadRequest from "./pages/errors/BadRequest";
-import Unauthorized from "./pages/errors/Unauthorized";
-import Forbidden from "./pages/errors/Forbidden";
-import ServerError from "./pages/errors/ServerError";
-import NotFound from "./pages/errors/NotFound";
-import Users from "./pages/Users/Users";
-import UserForm from "./pages/Users/UserForm";
-import Profile from "./pages/Profile/Profile";
-import AppLayout from "./components/AppLayout/AppLayout";
-import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword/ResetPassword";
-import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
+const Login = lazy(() => import("./pages/Login/Login"));
+const Registration = lazy(() => import("./pages/Registration/Registration"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword/ResetPassword"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail/VerifyEmail"));
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
+const Profile = lazy(() => import("./pages/Profile/Profile"));
+const Admin = lazy(() => import("./pages/Admin/Admin"));
+const Users = lazy(() => import("./pages/Users/Users"));
+const UserForm = lazy(() => import("./pages/Users/UserForm"));
+const BadRequest = lazy(() => import("./pages/errors/BadRequest"));
+const Unauthorized = lazy(() => import("./pages/errors/Unauthorized"));
+const Forbidden = lazy(() => import("./pages/errors/Forbidden"));
+const ServerError = lazy(() => import("./pages/errors/ServerError"));
+const NotFound = lazy(() => import("./pages/errors/NotFound"));
+const AppLayout = lazy(() => import("./components/AppLayout/AppLayout"));
 
 export default function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
+    <Suspense
+      fallback={
+        <div className="container py-4" role="status" aria-live="polite">
+          Loading page...
+        </div>
+      }
+    >
+      <Routes>
+        {/* Public Routes */}
 
-      <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />
 
-      <Route path="/register" element={<Registration />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/account/reset-password" element={<ResetPassword />} />
-      <Route path="/account/verify-email" element={<VerifyEmail />} />
+        <Route path="/register" element={<Registration />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/account/reset-password" element={<ResetPassword />} />
+        <Route path="/account/verify-email" element={<VerifyEmail />} />
 
-      {/* Protected Routes */}
+        {/* Protected Routes */}
 
-      <Route element={<ProtectedRoute />}>
-        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route element={<ProtectedRoute />}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
 
-        <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
 
-          {/* ADMIN only */}
+            {/* ADMIN only */}
 
-          <Route element={<RoleRoute allowedRoles={["ADMIN"]} />}>
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/users/new" element={<UserForm />} />
-            <Route path="/users/:userId/edit" element={<UserForm />} />
+            <Route element={<RoleRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/users/new" element={<UserForm />} />
+              <Route path="/users/:userId/edit" element={<UserForm />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
 
-      {/* Error Routes */}
+        {/* Error Routes */}
 
-      <Route path="/400" element={<BadRequest />} />
+        <Route path="/400" element={<BadRequest />} />
 
-      <Route path="/401" element={<Unauthorized />} />
+        <Route path="/401" element={<Unauthorized />} />
 
-      <Route path="/403" element={<Forbidden />} />
+        <Route path="/403" element={<Forbidden />} />
 
-      <Route path="/500" element={<ServerError />} />
+        <Route path="/500" element={<ServerError />} />
 
-      {/* 404 */}
+        {/* 404 */}
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 }
