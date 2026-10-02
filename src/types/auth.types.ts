@@ -1,13 +1,21 @@
 export type Role = "USER" | "ADMIN";
 
 export interface User {
-  id: number;
+  id: string;
   email: string;
   role: Role;
-  name?: string;
+  firstName: string;
+  lastName: string;
+  name: string;
+  gender: string;
+  phone: string;
+  department: string;
+  status: "active" | "inactive";
+  createdAt: string;
+  isVerified: boolean;
 }
 
 export interface LoginResponse {
-  accessToken: string;
-  user: User;
+  email: string;
+  jwtToken: string;
 }

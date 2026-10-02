@@ -137,6 +137,7 @@
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-transform: capitalize;
 }
 
 .app-navbar-user:hover .app-navbar-name,

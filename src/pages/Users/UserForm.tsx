@@ -16,6 +16,7 @@ import isNil from "lodash/isNil";
 import { createUser, getUser, updateUser } from "../../services/userService";
 import {
   DEPARTMENTS,
+  GENDERS,
   userSchema,
   type UserFormData,
 } from "./user.schema";
@@ -24,7 +25,9 @@ import type { User } from "./user.types";
 import "./Users.css";
 
 const initialFormData: Omit<UserFormData, "department"> = {
-  name: "",
+  firstName: "",
+  lastName: "",
+  gender: "other",
   email: "",
   phone: "",
   role: "user",
@@ -66,12 +69,11 @@ export default function UserForm() {
           throw new Error("A user ID is required to edit a user.");
         }
 
-        const id = Number(userId);
-        if (!Number.isSafeInteger(id) || id <= 0) {
+        if (!userId.trim()) {
           throw new Error("User not found");
         }
 
-        const user = await getUser(id);
+        const user = await getUser(userId);
 
         if (isActive) {
           const department = DEPARTMENTS.find(
@@ -79,7 +81,9 @@ export default function UserForm() {
           );
           setEditingUser(user);
           reset({
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            gender: user.gender.toLowerCase() as UserFormData["gender"],
             email: user.email,
             phone: user.phone,
             role: user.role,
@@ -167,19 +171,35 @@ export default function UserForm() {
             <Form onSubmit={handleSubmit(handleSave)} noValidate>
               <Row>
                 <Col md={6}>
-                  <Form.Group className="mb-3" controlId="user-name">
-                    <Form.Label>Name</Form.Label>
+                  <Form.Group className="mb-3" controlId="user-first-name">
+                    <Form.Label>First name</Form.Label>
                     <Form.Control
                       type="text"
-                      {...register("name")}
-                      isInvalid={!!errors.name}
+                      {...register("firstName")}
+                      isInvalid={!!errors.firstName}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.name?.message}
+                      {errors.firstName?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
 
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="user-last-name">
+                    <Form.Label>Last name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      {...register("lastName")}
+                      isInvalid={!!errors.lastName}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.lastName?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="user-email">
                     <Form.Label>Email</Form.Label>
@@ -193,6 +213,24 @@ export default function UserForm() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="user-gender">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Select
+                      {...register("gender")}
+                      isInvalid={!!errors.gender}
+                    >
+                      {GENDERS.map((gender) => (
+                        <option key={gender} value={gender}>
+                          {gender.charAt(0).toUpperCase() + gender.slice(1)}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.gender?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
               </Row>
 
               <Row>
@@ -201,8 +239,8 @@ export default function UserForm() {
                     <Form.Label>Phone</Form.Label>
                     <Form.Control
                       type="tel"
-                      maxLength={10}
-                      placeholder="Enter 10-digit phone number"
+                      maxLength={20}
+                      placeholder="Enter phone number"
                       {...register("phone")}
                       isInvalid={!!errors.phone}
                     />
@@ -211,7 +249,6 @@ export default function UserForm() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="user-department">
                     <Form.Label>Department</Form.Label>

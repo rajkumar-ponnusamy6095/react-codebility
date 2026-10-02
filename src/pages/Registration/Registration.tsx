@@ -14,6 +14,7 @@ import {
 
 import {
   Link,
+  useNavigate,
 } from "react-router";
 
 import {
@@ -29,10 +30,13 @@ import {
   type RegistrationFormData,
 } from "./registration.schema";
 
+import { DEPARTMENTS, GENDERS } from "../Users/user.schema";
+import { registerAccount } from "../../services/registrationService";
 import PlainNavBar from "../../components/PlainNavBar/PlainNavBar";
 import "./Registration.css";
 
 export default function Registration() {
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const {
@@ -47,8 +51,21 @@ export default function Registration() {
     mode: "onBlur",
   });
 
-  const onSubmit = () => {
-    setError("Self-service registration is not supported by the available API.");
+  const onSubmit = async (data: RegistrationFormData) => {
+    setError("");
+
+    try {
+      await registerAccount(data);
+      const name = `${data.firstName} ${data.lastName}`.trim();
+      navigate("/login", {
+        replace: true,
+        state: {
+          registrationNotification: `User "${name}" registered successfully. Please check your email and verify your account.`,
+        },
+      });
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Registration failed");
+    }
   };
 
   return (
@@ -172,50 +189,102 @@ export default function Registration() {
                     </Form.Control.Feedback>
                   </Form.Group>
 
-                  {/* Mobile Number */}
-                  <Form.Group
-                    className="mb-3"
-                    controlId="mobileNumber"
-                  >
-                    <Form.Label>
-                      Mobile Number
-                    </Form.Label>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="gender">
+                        <Form.Label>Gender</Form.Label>
+                        <Form.Select
+                          {...register("gender")}
+                          isInvalid={!!errors.gender}
+                        >
+                          <option value="">Select a gender</option>
+                          {GENDERS.map((gender) => (
+                            <option key={gender} value={gender}>
+                              {gender.charAt(0).toUpperCase() + gender.slice(1)}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.gender?.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
 
-                    <Form.Control
-                      type="tel"
-                      placeholder="Enter 10-digit mobile number"
-                      maxLength={10}
-                      {...register("mobileNumber")}
-                      isInvalid={
-                        !!errors.mobileNumber
-                      }
-                    />
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="phone">
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control
+                          type="tel"
+                          placeholder="Enter phone number"
+                          {...register("phone")}
+                          isInvalid={!!errors.phone}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.phone?.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
+                  <Form.Group className="mb-3" controlId="department">
+                    <Form.Label>Department</Form.Label>
+                    <Form.Select
+                      {...register("department")}
+                      isInvalid={!!errors.department}
+                    >
+                      <option value="">Select a department</option>
+                      {DEPARTMENTS.map((department) => (
+                        <option key={department} value={department}>
+                          {department}
+                        </option>
+                      ))}
+                    </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      {errors.mobileNumber?.message}
+                      {errors.department?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
 
-                  {/* Address */}
-                  <Form.Group
-                    className="mb-3"
-                    controlId="address"
-                  >
-                    <Form.Label>
-                      Address
-                    </Form.Label>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          autoComplete="new-password"
+                          {...register("password")}
+                          isInvalid={!!errors.password}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.password?.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
 
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      placeholder="Enter your address"
-                      {...register("address")}
-                      isInvalid={!!errors.address}
+                    <Col md={6}>
+                      <Form.Group className="mb-3" controlId="confirmPassword">
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          autoComplete="new-password"
+                          {...register("confirmPassword")}
+                          isInvalid={!!errors.confirmPassword}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.confirmPassword?.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Form.Group className="mb-3" controlId="acceptTerms">
+                    <Form.Check
+                      type="checkbox"
+                      label="I accept the terms and conditions"
+                      {...register("acceptTerms")}
+                      isInvalid={!!errors.acceptTerms}
+                      feedback={errors.acceptTerms?.message}
+                      feedbackType="invalid"
                     />
-
-                    <Form.Control.Feedback type="invalid">
-                      {errors.address?.message}
-                    </Form.Control.Feedback>
                   </Form.Group>
 
                   {/* Register Button */}

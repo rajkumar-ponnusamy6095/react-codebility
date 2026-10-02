@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useState,
 } from "react";
 
@@ -14,6 +15,7 @@ import {
 
 import {
   Link,
+  useLocation,
   useNavigate,
 } from "react-router";
 
@@ -31,6 +33,7 @@ import {
 
 import {
   login as loginApi,
+  getCurrentUser,
 } from "../../services/authService";
 
 import {
@@ -39,14 +42,27 @@ import {
 } from "./login.schema";
 
 import PlainNavBar from "../../components/PlainNavBar/PlainNavBar";
+import NotificationToast from "../../components/NotificationToast/NotificationToast";
 import "./Login.css";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { login } = useAuth();
 
   const [error, setError] = useState("");
+  const [notification, setNotification] = useState(() => {
+    const state = location.state;
+    return (
+      typeof state === "object" &&
+      state !== null &&
+      "registrationNotification" in state &&
+      typeof state.registrationNotification === "string"
+    )
+      ? state.registrationNotification
+      : "";
+  });
 
   const {
     register,
@@ -60,6 +76,20 @@ export default function Login() {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    const state = location.state;
+    if (
+      typeof state !== "object" ||
+      state === null ||
+      !("registrationNotification" in state) ||
+      typeof state.registrationNotification !== "string"
+    ) {
+      return;
+    }
+
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, location.state, navigate]);
+
   const onSubmit = async (data: LoginFormData) => {
     setError("");
 
@@ -69,7 +99,8 @@ export default function Login() {
         data.password
       );
 
-      login(response);
+      const currentUser = await getCurrentUser(response.jwtToken);
+      login(response, currentUser);
 
       navigate("/dashboard", { replace: true });
     } catch (error) {
@@ -84,6 +115,13 @@ export default function Login() {
   return (
     <>
       <PlainNavBar />
+
+      {notification && (
+        <NotificationToast
+          message={notification}
+          onClose={() => setNotification("")}
+        />
+      )}
 
       {/* Login Form */}
       <Container
@@ -167,6 +205,12 @@ export default function Login() {
                       {errors.password?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
+
+                  <div className="text-end mb-3">
+                    <Link to="/forgot-password">
+                      Forgot password?
+                    </Link>
+                  </div>
 
                   {/* Login Button */}
                   <Button

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DEPARTMENTS, GENDERS } from "../Users/user.schema";
 
 export const registrationSchema = z.object({
   firstName: z
@@ -19,20 +20,38 @@ export const registrationSchema = z.object({
     .min(1, "Email address is required")
     .email("Enter a valid email address"),
 
-  mobileNumber: z
-    .string()
-    .trim()
-    .min(1, "Mobile number is required")
-    .regex(
-      /^[6-9]\d{9}$/,
-      "Enter a valid 10-digit mobile number"
-    ),
+  gender: z.enum(GENDERS, {
+    error: "Select a gender",
+  }),
 
-  address: z
+  phone: z
     .string()
     .trim()
-    .min(1, "Address is required")
-    .min(10, "Address must be at least 10 characters"),
+    .min(1, "Phone number is required")
+    .regex(/^\+?[\d\s()-]+$/, "Enter a valid phone number")
+    .refine((phone) => {
+      const digitCount = phone.replace(/\D/g, "").length;
+      return digitCount >= 7 && digitCount <= 15;
+    }, "Enter a phone number with 7 to 15 digits"),
+
+  department: z.enum(DEPARTMENTS, {
+    error: "Select a department",
+  }),
+
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters"),
+
+  confirmPassword: z
+    .string()
+    .min(1, "Please confirm your password"),
+
+  acceptTerms: z.literal(true, {
+    error: "You must accept the terms and conditions",
+  }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 export type RegistrationFormData =

@@ -3,8 +3,7 @@ import { Navbar, Container, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
 
 import { useAuth } from "../../context/AuthContext";
-import { useEffect, useState } from "react";
-import { getUser } from "../../services/userService";
+import { useState } from "react";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 import "./AppNavbar.css";
 
@@ -19,42 +18,8 @@ export default function AppNavbar({
 }: AppNavbarProps) {
   const navigate = useNavigate();
   const [logoutError, setLogoutError] = useState("");
-  const [userNameError, setUserNameError] = useState("");
 
-  const { user, logout, updateUserName } = useAuth();
-  const userId = user?.id;
-
-  useEffect(() => {
-    if (!userId) {
-      return;
-    }
-
-    let isActive = true;
-
-    const loadUserName = async () => {
-      try {
-        const profile = await getUser(userId);
-        if (isActive) {
-          updateUserName(profile.name);
-          setUserNameError("");
-        }
-      } catch (error) {
-        if (isActive) {
-          setUserNameError(
-            error instanceof Error
-              ? error.message
-              : "Failed to load your name",
-          );
-        }
-      }
-    };
-
-    void loadUserName();
-
-    return () => {
-      isActive = false;
-    };
-  }, [userId, updateUserName]);
+  const { user, logout } = useAuth();
 
   const handleLogout = async () => {
     setLogoutError("");
@@ -143,17 +108,6 @@ export default function AppNavbar({
           onClose={() => setLogoutError("")}
         >
           {logoutError}
-        </Alert>
-      )}
-      {userNameError && (
-        <Alert
-          variant="danger"
-          className="mb-0"
-          role="alert"
-          dismissible
-          onClose={() => setUserNameError("")}
-        >
-          {userNameError}
         </Alert>
       )}
     </>

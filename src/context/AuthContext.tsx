@@ -10,10 +10,7 @@ import {
 
 import type { LoginResponse, User } from "../types/auth.types";
 import { ApiError } from "../services/api";
-import {
-  getCurrentUser,
-  logout as logoutApi,
-} from "../services/authService";
+import { getCurrentUser } from "../services/authService";
 
 interface AuthContextType {
   user: User | null;
@@ -21,9 +18,13 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   authError: string | null;
-  login: (response: LoginResponse) => void;
+  login: (response: LoginResponse, user: User) => void;
   logout: () => Promise<void>;
-  updateUserName: (name: string) => void;
+  updateUserName: (
+    name: string,
+    firstName?: string,
+    lastName?: string,
+  ) => void;
   retryAuthentication: () => void;
 }
 
@@ -46,6 +47,12 @@ export const AuthProvider = ({
   const [authError, setAuthError] = useState<string | null>(null);
   const [sessionAttempt, setSessionAttempt] = useState(0);
   const skipNextTokenValidation = useRef(false);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!token) {
@@ -100,32 +107,39 @@ export const AuthProvider = ({
     };
   }, [sessionAttempt, token]);
 
-  const login = (response: LoginResponse) => {
+  const login = (response: LoginResponse, currentUser: User) => {
     skipNextTokenValidation.current = true;
     setAuthError(null);
     setIsLoading(false);
-    setToken(response.accessToken);
-    setUser(response.user);
+    setToken(response.jwtToken);
+    setUser(currentUser);
     setSessionAttempt((attempt) => attempt + 1);
 
-    localStorage.setItem("token", response.accessToken);
-    localStorage.setItem(
-      "user",
-      JSON.stringify(response.user)
-    );
+    localStorage.setItem("token", response.jwtToken);
+    localStorage.setItem("user", JSON.stringify(currentUser));
   };
 
-  const updateUserName = useCallback((name: string) => {
-    setUser((currentUser) =>
-      currentUser ? { ...currentUser, name } : currentUser,
-    );
+  const updateUserName = useCallback((
+    name: string,
+    firstName?: string,
+    lastName?: string,
+  ) => {
+    setUser((currentUser) => {
+      if (!currentUser) {
+        return currentUser;
+      }
+
+      const updatedUser = {
+        ...currentUser,
+        name,
+        ...(firstName === undefined ? {} : { firstName }),
+        ...(lastName === undefined ? {} : { lastName }),
+      };
+      return updatedUser;
+    });
   }, []);
 
   const logout = async () => {
-    if (token) {
-      await logoutApi(token);
-    }
-
     setToken(null);
     setUser(null);
     setAuthError(null);

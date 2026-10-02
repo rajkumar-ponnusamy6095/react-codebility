@@ -17,6 +17,9 @@ import Users from "./pages/Users/Users";
 import UserForm from "./pages/Users/UserForm";
 import Profile from "./pages/Profile/Profile";
 import AppLayout from "./components/AppLayout/AppLayout";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
 
 export default function App() {
   return (
@@ -26,6 +29,9 @@ export default function App() {
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Registration />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/account/reset-password" element={<ResetPassword />} />
+      <Route path="/account/verify-email" element={<VerifyEmail />} />
 
       {/* Protected Routes */}
 

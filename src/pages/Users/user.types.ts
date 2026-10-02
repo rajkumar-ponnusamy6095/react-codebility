@@ -14,7 +14,10 @@ export interface UsersQueryParams {
 }
 
 export interface User {
-  id: number;
+  id: string;
+  gender: string;
+  firstName: string;
+  lastName: string;
   name: string;
   email: string;
   phone: string;
@@ -22,6 +25,7 @@ export interface User {
   role: UserRole;
   status: UserStatus;
   createdAt: string;
+  isVerified: boolean;
 }
 
 export interface UserPagination {

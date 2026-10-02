@@ -460,7 +460,7 @@ export default function Users() {
                 <option value="HR">HR</option>
                 <option value="Engineering">Engineering</option>
                 <option value="Administration">Administration</option>
-                <option value="operation">Operations</option>
+                <option value="Operation">Operation</option>
                 <option value="Marketing">Marketing</option>
               </Form.Select>
             </Col>
@@ -487,16 +487,6 @@ export default function Users() {
 
                     <th
                       onClick={() =>
-                        handleSort("id")
-                      }
-                      className="sortable"
-                    >
-                      ID{" "}
-                      {getSortIcon("id")}
-                    </th>
-
-                    <th
-                      onClick={() =>
                         handleSort(
                           "name"
                         )
@@ -519,6 +509,10 @@ export default function Users() {
                       {getSortIcon(
                         "email"
                       )}
+                    </th>
+
+                    <th>
+                      Gender
                     </th>
 
                     <th>
@@ -602,10 +596,6 @@ export default function Users() {
                         >
 
                           <td>
-                            {user.id}
-                          </td>
-
-                          <td>
                             <div className="user-name">
                               {user.name}
                             </div>
@@ -613,6 +603,10 @@ export default function Users() {
 
                           <td>
                             {user.email}
+                          </td>
+
+                          <td className="user-gender">
+                            {user.gender}
                           </td>
 
                           <td>

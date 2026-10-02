@@ -45,11 +45,7 @@ export default function Profile() {
     let isActive = true;
 
     const loadProfile = async () => {
-      if (
-        isNil(authUserId) ||
-        !Number.isSafeInteger(authUserId) ||
-        authUserId <= 0
-      ) {
+      if (isNil(authUserId) || !authUserId.trim()) {
         setLoadError(
           "Your profile could not be loaded because your account ID is missing.",
         );
@@ -64,9 +60,15 @@ export default function Profile() {
 
         if (isActive) {
           setProfile(loadedProfile);
-          updateUserName(loadedProfile.name);
+          updateUserName(
+            loadedProfile.name,
+            loadedProfile.firstName,
+            loadedProfile.lastName,
+          );
           reset({
-            name: loadedProfile.name,
+            firstName: loadedProfile.firstName,
+            lastName: loadedProfile.lastName,
+            gender: loadedProfile.gender.toLowerCase() as UserProfileFormData["gender"],
             phone: loadedProfile.phone,
             department: loadedProfile.department,
           });
@@ -101,7 +103,9 @@ export default function Profile() {
       setFormError("");
       setSaveSuccess("");
       const updatedProfile = await updateUser(profile.id, {
-        name: data.name,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        gender: data.gender,
         email: profile.email,
         phone: data.phone,
         department: data.department,
@@ -109,9 +113,15 @@ export default function Profile() {
         status: profile.status,
       });
       setProfile(updatedProfile);
-      updateUserName(updatedProfile.name);
+      updateUserName(
+        updatedProfile.name,
+        updatedProfile.firstName,
+        updatedProfile.lastName,
+      );
       reset({
-        name: updatedProfile.name,
+        firstName: updatedProfile.firstName,
+        lastName: updatedProfile.lastName,
+        gender: updatedProfile.gender.toLowerCase() as UserProfileFormData["gender"],
         phone: updatedProfile.phone,
         department: updatedProfile.department,
       });
@@ -168,15 +178,29 @@ export default function Profile() {
             <Form onSubmit={handleSubmit(handleSave)} noValidate>
               <Row>
                 <Col md={6}>
-                  <Form.Group className="mb-3" controlId="profile-name">
-                    <Form.Label>Name</Form.Label>
+                  <Form.Group className="mb-3" controlId="profile-first-name">
+                    <Form.Label>First name</Form.Label>
                     <Form.Control
                       type="text"
-                      {...register("name")}
-                      isInvalid={!!errors.name}
+                      {...register("firstName")}
+                      isInvalid={!!errors.firstName}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.name?.message}
+                      {errors.firstName?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="profile-last-name">
+                    <Form.Label>Last name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      {...register("lastName")}
+                      isInvalid={!!errors.lastName}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.lastName?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -199,11 +223,27 @@ export default function Profile() {
 
               <Row>
                 <Col md={6}>
+                  <Form.Group className="mb-3" controlId="profile-gender">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Select
+                      {...register("gender")}
+                      isInvalid={!!errors.gender}
+                    >
+                      <option value="female">Female</option>
+                      <option value="male">Male</option>
+                      <option value="other">Other</option>
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.gender?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
                   <Form.Group className="mb-3" controlId="profile-phone">
                     <Form.Label>Phone</Form.Label>
                     <Form.Control
                       type="tel"
-                      maxLength={10}
+                      maxLength={20}
                       {...register("phone")}
                       isInvalid={!!errors.phone}
                     />
