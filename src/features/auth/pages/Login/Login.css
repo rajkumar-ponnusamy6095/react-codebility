@@ -1,0 +1,7 @@
+.login-page__card {
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  border: 0;
+  border-radius: 1rem;
+}

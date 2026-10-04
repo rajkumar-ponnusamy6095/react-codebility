@@ -19,7 +19,7 @@ export default function ThemeSwitcher() {
         {currentTheme.label}
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu align="end">
         {(Object.keys(themes) as ThemeName[]).map(
           (themeName) => {
             const item = themes[themeName];

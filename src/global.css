@@ -1,0 +1,55 @@
+body {
+  font-family: var(--app-font-family);
+  background:
+    radial-gradient(
+      circle at 10% 20%,
+      color-mix(in srgb, var(--app-gradient-start) 12%, transparent),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      color-mix(in srgb, var(--app-gradient-end) 12%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f8fafc 0%,
+      color-mix(in srgb, var(--app-primary-light) 55%, #eef2ff) 100%
+    );
+}
+
+.login-page__content {
+  box-sizing: border-box;
+  min-height: calc(100vh - 64px);
+  padding-block: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.login-page__content > .row {
+  width: calc(100% + var(--bs-gutter-x));
+}
+
+.theme-color {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.table {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+.table > thead > tr > th {
+  --bs-table-bg: var(--app-table-header-bg);
+  --bs-table-color: var(--app-table-header-color);
+  border-bottom-color: var(--app-table-header-border);
+}

@@ -1,12 +1,13 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   getCurrentUser,
+  changePassword,
   login,
   requestPasswordReset,
   resetPassword,
   validatePasswordResetToken,
   verifyEmail,
-} from "../services/authService";
+} from "../features/auth/services/authService";
 
 describe("authService", () => {
   it("logs in with valid response data", async () => {
@@ -123,6 +124,30 @@ describe("authService", () => {
       new Response(JSON.stringify({ message: "Email verified" }), { status: 200 }),
     );
     await expect(verifyEmail("token-1")).resolves.toEqual({ message: "Email verified" });
+  });
+
+  it("changes the authenticated user's password", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ message: "Password changed" }), {
+        status: 200,
+      }),
+    );
+
+    await expect(
+      changePassword("oldPassword123", "newPassword123", "newPassword123"),
+    ).resolves.toBeUndefined();
+
+    expect(globalThis.fetch).toHaveBeenCalledWith(
+      expect.stringContaining("/v1/accounts/change-password"),
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          oldPassword: "oldPassword123",
+          newPassword: "newPassword123",
+          confirmPassword: "newPassword123",
+        }),
+      }),
+    );
   });
 
   it("rejects responses that do not include a message", async () => {

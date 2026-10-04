@@ -1,0 +1,386 @@
+:root {
+  --app-font-family: "DM Sans", "Segoe UI", sans-serif;
+  --app-primary: #2563eb;
+  --app-primary-dark: #1d4ed8;
+  --app-primary-light: #dbeafe;
+
+  --app-gradient-start: #2563eb;
+  --app-gradient-end: #06b6d4;
+
+  --app-bg: #f8fafc;
+  --app-text: #1e293b;
+  --app-surface: #ffffff;
+  --app-border: #e2e8f0;
+  --app-muted: #64748b;
+  --app-card-bg: var(--app-surface);
+  --app-table-header-bg: color-mix(in srgb, var(--app-primary-dark) 45%, #1e293b);
+  --app-table-header-color: #f8fafc;
+  --app-table-header-border: color-mix(in srgb, var(--app-table-header-bg) 80%, #000);
+}
+
+[data-theme="blue"] {
+  --app-primary: #2563eb;
+  --app-primary-dark: #1d4ed8;
+  --app-primary-light: #dbeafe;
+  --app-gradient-start: #2563eb;
+  --app-gradient-end: #06b6d4;
+}
+
+[data-theme="orange"] {
+  --app-primary: #f97316;
+  --app-primary-dark: #ea580c;
+  --app-primary-light: #ffedd5;
+  --app-gradient-start: #f97316;
+  --app-gradient-end: #f59e0b;
+}
+
+[data-theme="pink"] {
+  --app-primary: #ec4899;
+  --app-primary-dark: #db2777;
+  --app-primary-light: #fce7f3;
+  --app-gradient-start: #ec4899;
+  --app-gradient-end: #f43f5e;
+}
+
+[data-theme="green"] {
+  --app-primary: #10b981;
+  --app-primary-dark: #059669;
+  --app-primary-light: #d1fae5;
+  --app-gradient-start: #10b981;
+  --app-gradient-end: #14b8a6;
+}
+
+[data-theme="yellow"] {
+  --app-primary: #eab308;
+  --app-primary-dark: #ca8a04;
+  --app-primary-light: #fef9c3;
+  --app-gradient-start: #eab308;
+  --app-gradient-end: #f59e0b;
+}
+
+[data-theme="violet"] {
+  --app-primary: #8b5cf6;
+  --app-primary-dark: #7c3aed;
+  --app-primary-light: #ede9fe;
+  --app-gradient-start: #8b5cf6;
+  --app-gradient-end: #6366f1;
+}
+
+body {
+  margin: 0;
+  color: var(--app-text);
+}
+
+a {
+  color: var(--app-primary);
+}
+
+a:hover {
+  color: var(--app-primary-dark);
+}
+
+.app-navbar {
+  border-bottom: 1px solid var(--app-border);
+  background: var(--app-primary-dark) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--app-primary-dark) 25%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--app-primary-dark) 80%, #000);
+}
+
+.app-navbar .navbar-brand:hover,
+.app-navbar .navbar-brand:focus {
+  color: var(--app-primary-light) !important;
+}
+
+.app-navbar-brand-mark {
+  background: linear-gradient(
+    135deg,
+    var(--app-gradient-start),
+    var(--app-gradient-end)
+  );
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--app-primary) 25%, transparent);
+  color: #fff;
+}
+
+.app-navbar .navbar-toggler:hover,
+.app-navbar .navbar-toggler:focus {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--app-primary) 20%, transparent);
+}
+
+.app-navbar .theme-switcher .dropdown-toggle {
+  border-color: color-mix(in srgb, var(--app-primary) 35%, transparent);
+  background-color: var(--app-primary-light);
+  color: var(--app-primary-dark);
+  font-weight: 600;
+}
+
+.app-navbar .theme-switcher .dropdown-toggle:hover,
+.app-navbar .theme-switcher .dropdown-toggle:focus,
+.app-navbar .theme-switcher .dropdown-toggle.show {
+  border-color: var(--app-primary-dark);
+  background-color: var(--app-primary-dark);
+  color: #fff;
+}
+
+.app-navbar .theme-switcher .dropdown-item.active,
+.app-navbar .theme-switcher .dropdown-item:active {
+  background-color: var(--app-primary);
+  color: #fff;
+}
+
+.app-navbar-user {
+  border-right: 1px solid var(--app-border);
+  color: #fff;
+}
+
+.app-navbar-user:hover,
+.app-navbar-user:focus {
+  color: var(--app-primary-light);
+}
+
+.app-navbar-avatar {
+  background: var(--app-primary-light);
+  color: var(--app-primary-dark);
+}
+
+.app-navbar-user:hover .app-navbar-name,
+.app-navbar-user:focus .app-navbar-name {
+  color: var(--app-primary-light);
+}
+
+.app-navbar .app-navbar-logout {
+  border-color: color-mix(in srgb, #fff 60%, transparent);
+  color: #fff;
+}
+
+.app-navbar .app-navbar-logout:hover,
+.app-navbar .app-navbar-logout:focus {
+  border-color: #fff;
+  color: var(--app-primary-dark);
+}
+
+.app-navbar .sidebar-toggle:hover,
+.app-navbar .sidebar-toggle:focus {
+  color: var(--app-primary-light);
+}
+
+.sidebar-toggle-icon span {
+  background-color: currentColor;
+}
+
+.app-sidebar .sidebar-link.active {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--app-primary) 24%, transparent),
+    color-mix(in srgb, var(--app-primary) 12%, transparent)
+  );
+  color: var(--app-primary) !important;
+}
+
+.app-sidebar .sidebar-link.active .sidebar-icon {
+  color: var(--app-primary);
+}
+
+.dashboard-header h1,
+.stat-value,
+.chart-header h5,
+.sync-button,
+.donut-hole strong,
+.traffic-item {
+  color: var(--app-text);
+}
+
+.stat-icon,
+.task-progress .progress-bar,
+.bar-primary {
+  background-color: var(--app-primary);
+}
+
+.task-progress .progress,
+.bar-secondary {
+  background-color: var(--app-primary-light);
+}
+
+.sync-button:hover,
+.traffic-desktop {
+  color: var(--app-primary);
+}
+
+.donut-chart {
+  background: conic-gradient(
+    var(--app-primary) 0deg 227deg,
+    var(--app-primary-light) 227deg 281deg,
+    var(--app-gradient-end) 281deg 360deg
+  );
+}
+
+.traffic-tablet {
+  color: var(--app-gradient-end);
+}
+
+.profile-header h1,
+.profile-card {
+  color: var(--app-text);
+}
+
+.profile-header p,
+.profile-loading {
+  color: var(--app-muted);
+}
+
+.profile-card {
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+}
+
+.profile-card .form-control.disabled {
+  background-color: var(--app-bg);
+}
+
+.users-header h1,
+.users-table tbody td,
+.users-pagination .page-link {
+  color: var(--app-text);
+}
+
+.users-header p,
+.users-count,
+.users-loading,
+.users-pagination-controls,
+.page-info {
+  color: var(--app-muted);
+}
+
+.users-card {
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text);
+}
+
+.users-table {
+  --bs-table-color: var(--app-text);
+  --bs-table-bg: var(--app-surface);
+  --bs-table-border-color: var(--app-border);
+  --bs-table-striped-color: var(--app-text);
+  --bs-table-striped-bg: color-mix(
+    in srgb,
+    var(--app-primary-light) 38%,
+    var(--app-surface)
+  );
+  --bs-table-hover-color: var(--app-text);
+  --bs-table-hover-bg: color-mix(
+    in srgb,
+    var(--app-primary-light) 68%,
+    var(--app-surface)
+  );
+}
+
+.sortable:hover {
+  color: var(--app-primary) !important;
+}
+
+.users-table .status-badge-active {
+  background-color: var(--app-primary) !important;
+}
+
+.users-pagination {
+  border-top: 1px solid var(--app-border);
+}
+
+.users-pagination .active .page-link {
+  background-color: var(--app-primary-light);
+  color: var(--app-primary-dark);
+}
+
+.notification-toast {
+  border: 1px solid color-mix(in srgb, var(--app-gradient-end) 70%, #fff);
+  background: linear-gradient(
+    135deg,
+    var(--app-gradient-start),
+    var(--app-gradient-end)
+  );
+  color: #f8fafc;
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--app-primary-dark) 35%, transparent);
+}
+
+.notification-toast-content i,
+.notification-toast-close,
+.notification-toast-close:hover,
+.notification-toast-close:focus-visible {
+  color: #fff;
+}
+
+.notification-toast-close,
+.notification-toast-close:hover,
+.notification-toast-close:focus-visible {
+  background: transparent;
+}
+
+.notification-toast-close:hover,
+.notification-toast-close:focus-visible {
+  background: color-mix(in srgb, #fff 18%, transparent);
+}
+
+.notification-toast-progress {
+  background: color-mix(in srgb, #fff 30%, transparent);
+}
+
+.notification-toast-progress-bar {
+  background: #fff;
+}
+
+.auth-card {
+  border: 1px solid var(--app-border);
+  background-color: var(--app-surface);
+  color: var(--app-text);
+}
+
+.auth-card .form-control:focus {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--app-primary) 25%, transparent);
+}
+
+.app-primary {
+  background-color: var(--app-primary) !important;
+  border-color: var(--app-primary) !important;
+  color: white !important;
+}
+
+.app-primary:hover {
+  background-color: var(--app-primary-dark) !important;
+  border-color: var(--app-primary-dark) !important;
+}
+
+.app-primary-outline {
+  background-color: transparent !important;
+  border: 1px solid var(--app-primary) !important;
+  color: var(--app-primary) !important;
+}
+
+.app-primary-outline:hover {
+  background-color: var(--app-primary) !important;
+  color: white !important;
+}
+
+.app-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--app-gradient-start),
+    var(--app-gradient-end)
+  );
+  color: white;
+}
+
+.app-primary-text {
+  color: var(--app-primary) !important;
+}
+
+.app-primary-bg {
+  background-color: var(--app-primary) !important;
+  color: white;
+}
+
+.app-primary-light-bg {
+  background-color: var(--app-primary-light) !important;
+}

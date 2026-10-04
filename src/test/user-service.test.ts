@@ -5,7 +5,7 @@ import {
   getUser,
   getUsers,
   updateUser,
-} from "../services/userService";
+} from "../features/users/services/userService";
 
 describe("userService", () => {
   it("normalizes user list responses and serializes query params", async () => {
@@ -39,7 +39,7 @@ describe("userService", () => {
     });
 
     expect(fetchMock.mock.calls[0][0]).toBe(
-      "http://localhost:4000/api/v1/accounts?page=1&firstName=name&role=Admin&status=active",
+      `${import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, "")}/v1/accounts?page=1&firstName=name&role=Admin&status=active`,
     );
   });
 

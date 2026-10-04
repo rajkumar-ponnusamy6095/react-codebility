@@ -11,9 +11,13 @@
   }
 }
 
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000/api"
-).replace(/\/+$/, "");
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+
+if (!configuredApiBaseUrl) {
+  throw new Error("VITE_API_BASE_URL must be configured");
+}
+
+const API_BASE_URL = configuredApiBaseUrl.replace(/\/+$/, "");
 
 interface ApiRequestOptions extends RequestInit {
   token?: string | null;

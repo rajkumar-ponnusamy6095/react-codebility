@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { userSchema } from "../pages/Users/user.schema";
+import { userSchema } from "../features/users/pages/Users/user.schema";
 
 describe("userSchema", () => {
   it("accepts valid user data", () => {

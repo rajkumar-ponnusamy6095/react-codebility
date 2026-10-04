@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { registerAccount } from "../services/registrationService";
+import { registerAccount } from "../features/auth/services/registrationService";
 
 describe("registrationService", () => {
   it("registers an account with the expected payload", async () => {

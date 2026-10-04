@@ -8,9 +8,9 @@ import {
   type ReactNode,
 } from "react";
 
-import type { LoginResponse, User } from "../types/auth.types";
+import type { LoginResponse, User } from "../features/auth/types/auth.types";
 import { ApiError } from "../services/api";
-import { getCurrentUser } from "../services/authService";
+import { getCurrentUser } from "../features/auth/services/authService";
 
 interface AuthContextType {
   user: User | null;

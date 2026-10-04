@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { registrationSchema } from "../pages/Registration/registration.schema";
+import { registrationSchema } from "../features/auth/pages/Registration/registration.schema";
 
 describe("registrationSchema", () => {
   it("accepts valid registration data", () => {

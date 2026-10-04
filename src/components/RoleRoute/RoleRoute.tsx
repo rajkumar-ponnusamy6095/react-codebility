@@ -5,7 +5,7 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 
-import type { Role } from "../../types/auth.types";
+import type { Role } from "../../features/auth/types/auth.types";
 
 interface RoleRouteProps {
   allowedRoles: Role[];
