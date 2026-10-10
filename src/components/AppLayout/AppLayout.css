@@ -20,7 +20,7 @@
   display: none;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767.98px) {
   .dashboard-page.sidebar-open .dashboard-main {
     margin-left: 0;
   }

@@ -22,6 +22,7 @@ import {
 import type { User } from "../../types/user.types";
 
 import "./Users.css";
+import "./UserForm.css";
 
 const initialFormData: Omit<UserFormData, "department"> = {
   firstName: "",
@@ -135,11 +136,21 @@ export default function UserForm() {
   };
 
   return (
-    <div className="users-page">
+    <div className="users-page user-form-page">
       <div className="users-header">
-        <div>
-          <h1>{isEditing ? "Edit User" : "Add User"}</h1>
-          <p>{isEditing ? "Update user details" : "Create a new user"}</p>
+        <div className="user-form-header-content">
+          <div>
+            <span className="user-form-eyebrow">WORKSPACE DIRECTORY</span>
+            <h1>{isEditing ? "Edit User" : "Add User"}</h1>
+            <p>
+              {isEditing
+                ? "Review roles, contact details, and account access."
+                : "Add a trusted teammate with the right access from day one."}
+            </p>
+          </div>
+          <span className="user-form-header-icon" aria-hidden="true">
+            <i className={`bi ${isEditing ? "bi-person-gear" : "bi-person-plus-fill"}`} aria-hidden="true" />
+          </span>
         </div>
       </div>
 
@@ -157,6 +168,19 @@ export default function UserForm() {
       ) : !loadError ? (
         <Card className="users-card">
           <Card.Body>
+            <div className="user-form-card-heading">
+              <span className="user-form-card-heading-icon" aria-hidden="true">
+                <i className="bi bi-card-checklist" aria-hidden="true" />
+              </span>
+              <div>
+                <strong>{isEditing ? "Keep this account accurate" : "Start with the essentials"}</strong>
+                <span>
+                  {isEditing
+                    ? "These details control how this user appears and what they can access."
+                    : "Add contact details first, then choose the role and status that fit this account."}
+                </span>
+              </div>
+            </div>
             {formError && (
               <Alert
                 variant="danger"

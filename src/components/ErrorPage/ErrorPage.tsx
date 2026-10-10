@@ -1,61 +1,11 @@
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import PlainNavBar from "../PlainNavBar/PlainNavBar";
 import "./ErrorPage.css";
 
-interface ErrorPageProps {
-  code: number;
-  title: string;
-  message: string;
-  buttonText: string;
-  buttonPath: string;
-  retryButtonText?: string;
-}
+interface ErrorPageProps { code: number; title: string; message: string; buttonText: string; buttonPath: string; retryButtonText?: string; }
 
-export default function ErrorPage({
-  code,
-  title,
-  message,
-  buttonText,
-  buttonPath,
-  retryButtonText,
-}: ErrorPageProps) {
+export default function ErrorPage({ code, title, message, buttonText, buttonPath, retryButtonText }: ErrorPageProps) {
   const navigate = useNavigate();
-
-  return (
-    <>
-      <PlainNavBar />
-      <Container fluid className="error-page__content">
-        <Row className="error-page__row justify-content-center align-items-center">
-          <Col xs={11} sm={8} md={6} lg={4}>
-            <Card className="auth-card text-center shadow">
-              <Card.Body className="p-5">
-                <h1 className="display-1 fw-bold app-primary-text">{code}</h1>
-                <h3>{title}</h3>
-                <p className="text-muted">{message}</p>
-                <div className="d-flex justify-content-center gap-2">
-                  {retryButtonText && (
-                    <Button
-                      variant="primary"
-                      className="app-primary"
-                      onClick={() => window.location.reload()}
-                    >
-                      {retryButtonText}
-                    </Button>
-                  )}
-                  <Button
-                    variant={retryButtonText ? "outline-primary" : "primary"}
-                    className={retryButtonText ? "app-primary-outline" : "app-primary"}
-                    onClick={() => navigate(buttonPath)}
-                  >
-                    {buttonText}
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+  return <><PlainNavBar /><main className="error-page"><div className="error-page__orb error-page__orb--one" /><div className="error-page__orb error-page__orb--two" /><section className="error-card" aria-labelledby="error-title"><div className="error-card__art" aria-hidden="true"><span className="error-card__grid" /><span className="error-card__code">{code}</span><span className="error-card__badge"><i className="bi bi-stars" /></span></div><div className="error-card__copy"><span className="error-eyebrow">CODEBILITY / SYSTEM MESSAGE</span><h1 id="error-title">{title}</h1><p>{message}</p><div className="error-card__actions">{retryButtonText && <Button className="app-primary" onClick={() => window.location.reload()}><i className="bi bi-arrow-clockwise me-2" />{retryButtonText}</Button>}<Button className={retryButtonText ? "app-primary-outline" : "app-primary"} onClick={() => navigate(buttonPath)}>{buttonText}<i className="bi bi-arrow-up-right ms-2" /></Button></div></div></section><p className="error-page__footer"><i className="bi bi-shield-check me-1" /> Your workspace is safe. Let’s get you back on track.</p></main></>;
 }

@@ -18,6 +18,7 @@ export default function AppNavbar({
 }: AppNavbarProps) {
   const navigate = useNavigate();
   const [logoutError, setLogoutError] = useState("");
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   const { user, logout } = useAuth();
 
@@ -37,7 +38,7 @@ export default function AppNavbar({
   return (
     <>
       <Navbar
-        expand="lg"
+        expand="md"
         fixed="top"
         className={`app-navbar${onSidebarToggle ? " dashboard-navbar" : ""}${sidebarOpen ? " sidebar-open" : ""}`}
       >
@@ -72,17 +73,19 @@ export default function AppNavbar({
           <Navbar.Collapse>
             <div className="app-navbar-actions ms-auto">
               {user?.name && (
-                <Link
-                  to="/profile"
-                  className="app-navbar-user"
-                  aria-label="View your profile"
-                  title={user.name}
-                >
+                <div className="app-profile-menu">
+                  <button type="button" className="app-navbar-user" aria-label="Open profile menu" aria-expanded={profileMenuOpen} onClick={() => setProfileMenuOpen((open) => !open)} title={user.name}>
                   <span className="app-navbar-avatar" aria-hidden="true">
                     {user.name.charAt(0).toUpperCase()}
                   </span>
                   <span className="app-navbar-name">{user.name}</span>
-                </Link>
+                  <i className="bi bi-chevron-down app-profile-chevron" aria-hidden="true" />
+                  </button>
+                  {profileMenuOpen && <div className="app-profile-dropdown" aria-label="Profile menu">
+                    <div className="app-profile-summary"><span className="app-profile-dropdown-avatar">{user.name.charAt(0).toUpperCase()}</span><span className="app-profile-summary-copy"><strong>{user.name}</strong>{user.email && <small>{user.email}</small>}</span></div>
+                    <Link to="/profile" className="app-profile-link" onClick={() => setProfileMenuOpen(false)}><i className="bi bi-person-circle" aria-hidden="true" /><span>Profile &amp; security</span><i className="bi bi-arrow-up-right ms-auto" aria-hidden="true" /></Link>
+                  </div>}
+                </div>
               )}
               <ThemeSwitcher />
 

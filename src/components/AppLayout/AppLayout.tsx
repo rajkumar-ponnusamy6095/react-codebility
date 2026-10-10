@@ -8,7 +8,7 @@ import "./AppLayout.css";
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(
-    () => typeof window !== "undefined" && window.innerWidth >= 992,
+    () => typeof window !== "undefined" && window.innerWidth >= 768,
   );
 
   return (

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import {
   Alert,
-  Badge,
   Button,
   Card,
   Col,
@@ -475,7 +474,7 @@ export default function Users() {
               </span>
             </div>
           ) : (
-            <div className="table-responsive">
+            <div className="table-responsive users-table-responsive">
 
               <Table
                 striped
@@ -499,17 +498,7 @@ export default function Users() {
                       )}
                     </th>
 
-                    <th
-                      onClick={() =>
-                        handleSort("email")
-                      }
-                      className="sortable"
-                    >
-                      Email{" "}
-                      {getSortIcon(
-                        "email"
-                      )}
-                    </th>
+                    <th>Email</th>
 
                     <th>
                       Gender
@@ -519,15 +508,7 @@ export default function Users() {
                       Phone
                     </th>
 
-                    <th
-                      onClick={() =>
-                        handleSort("department")
-                      }
-                      className="sortable"
-                    >
-                      Department{" "}
-                      {getSortIcon("department")}
-                    </th>
+                    <th>Department</th>
 
                     <th
                       onClick={() =>
@@ -541,19 +522,9 @@ export default function Users() {
                       )}
                     </th>
 
-                    <th
-                      onClick={() =>
-                        handleSort(
-                          "status"
-                        )
-                      }
-                      className="sortable"
-                    >
-                      Status{" "}
-                      {getSortIcon(
-                        "status"
-                      )}
-                    </th>
+                    <th>Status</th>
+
+                    <th>Verified</th>
 
                     <th
                       onClick={() =>
@@ -582,7 +553,7 @@ export default function Users() {
                   0 ? (
                     <tr>
                       <td
-                        colSpan={9}
+                        colSpan={10}
                         className="text-center py-5"
                       >
                         No users found
@@ -597,6 +568,14 @@ export default function Users() {
 
                           <td>
                             <div className="user-name">
+                              <span className="user-avatar" aria-hidden="true">
+                                {user.name
+                                  .split(" ")
+                                  .filter(Boolean)
+                                  .slice(0, 2)
+                                  .map((part) => part[0]?.toUpperCase())
+                                  .join("")}
+                              </span>
                               {user.name}
                             </div>
                           </td>
@@ -623,16 +602,18 @@ export default function Users() {
                             {user.role}
                           </td>
 
-                          <td className="user-status">
-                            <Badge
-                              bg={user.status === "inactive" ? "secondary" : undefined}
-                              className={user.status === "active" ? "status-badge-active" : undefined}
-                            >
-                              {
-                                user.status
-                              }
-                            </Badge>
-                          </td>
+                           <td>
+                             <span className={`user-status-badge${user.status === "active" ? " is-active" : ""}`}>
+                               <span className="user-status-badge__dot" />
+                               {user.status}
+                             </span>
+                           </td>
+
+                           <td>
+                             <span className={`user-verified-badge${user.isVerified ? " is-verified" : ""}`}>
+                               {user.isVerified ? "Verified" : "Pending"}
+                             </span>
+                           </td>
 
                           <td>
                             {
@@ -645,7 +626,7 @@ export default function Users() {
 
                               <Button
                                 size="sm"
-                                variant="outline-primary"
+                                 className="btn-edit"
                                 onClick={() =>
                                   handleEdit(
                                     user
@@ -658,7 +639,7 @@ export default function Users() {
 
                               <Button
                                 size="sm"
-                                variant="outline-danger"
+                                 className="btn-delete"
                                 onClick={() =>
                                   setUserToDelete({
                                     id: user.id,

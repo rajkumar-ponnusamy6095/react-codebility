@@ -176,10 +176,11 @@ a:hover {
     color-mix(in srgb, var(--app-primary) 12%, transparent)
   );
   color: var(--app-primary) !important;
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--app-primary) 14%, transparent);
 }
 
 .app-sidebar .sidebar-link.active .sidebar-icon {
-  color: var(--app-primary);
+  color: #fff;
 }
 
 .dashboard-header h1,

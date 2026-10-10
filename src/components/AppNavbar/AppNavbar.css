@@ -1,8 +1,9 @@
 .app-navbar {
-  position: relative;
+  position: fixed;
+  inset: 0 0 auto 0;
   z-index: 1030;
-  min-height: 64px;
-  padding: 0.65rem 0;
+  height: 64px;
+  padding: 0;
   transition:
     background 0.25s ease,
     width 0.25s ease,
@@ -14,11 +15,19 @@
   margin-left: 240px;
 }
 
+.app-navbar > .container-fluid {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+}
+
 .app-navbar .navbar-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  margin-right: 1.5rem;
+  gap: 10px;
+  margin-right: 0;
   color: #fff !important;
   font-size: 1.08rem;
   font-weight: 700;
@@ -36,7 +45,13 @@
 }
 
 .app-navbar .navbar-toggler {
-  padding: 0.35rem 0.55rem;
+  display: none;
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 26%);
+  border-radius: 9px;
   border-color: color-mix(in srgb, #fff 55%, transparent);
   color: #fff;
 }
@@ -52,7 +67,7 @@
 .app-navbar-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 12px;
 }
 
 .app-navbar-user {
@@ -91,7 +106,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.45rem 0.75rem;
+  min-height: 38px;
+  padding: 7px 12px;
+  border: 1px solid rgb(255 255 255 / 35%);
+  font-size: 0.84rem;
   font-weight: 600;
 }
 
@@ -102,10 +120,15 @@
 
 .app-navbar .sidebar-toggle {
   display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
   align-items: center;
   justify-content: center;
-  margin-right: 0.5rem;
-  padding: 0.5rem;
+  margin-right: 0;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 26%);
+  border-radius: 9px;
   color: #fff;
   text-decoration: none;
 }
@@ -122,7 +145,7 @@
   border-radius: 2px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767.98px) {
   .dashboard-navbar.sidebar-open {
     width: 100%;
     margin-left: 0;
@@ -150,3 +173,32 @@
     max-width: calc(100vw - 180px);
   }
 }
+
+@media (max-width: 767.98px) {
+  .app-navbar > .container-fluid {
+    gap: 10px;
+    padding: 0 16px;
+  }
+
+  .app-navbar .navbar-toggler {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app-navbar-actions {
+    width: 100%;
+  }
+}
+
+.app-profile-menu { position: relative; }
+.app-navbar-user { border: 1px solid transparent; border-radius: 12px; background: transparent; cursor: pointer; }
+.app-navbar-user, .app-navbar-user:hover, .app-navbar-user:focus, .app-navbar-user:active { appearance: none; border-right: 0 !important; outline: 0; box-shadow: none; }
+.app-navbar-user:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.app-navbar-user:hover, .app-navbar-user[aria-expanded="true"] { border-color: rgb(255 255 255 / 22%); background: rgb(255 255 255 / 10%); }
+.app-profile-chevron { font-size: .65rem; opacity: .78; }
+.app-profile-dropdown { position: absolute; top: calc(100% + 10px); right: 0; z-index: 20; width: min(290px, calc(100vw - 32px)); padding: 9px; border: 1px solid var(--app-border); border-radius: 14px; background: var(--app-surface); color: var(--app-text); box-shadow: 0 16px 38px rgb(15 23 42 / 20%); }
+.app-profile-summary { display: flex; align-items: center; gap: 11px; padding: 11px; }
+.app-profile-dropdown-avatar { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 13px; background: var(--app-primary-light); color: var(--app-primary); font-weight: 750; }
+.app-profile-summary-copy { display: grid; min-width: 0; gap: 3px; }.app-profile-summary-copy strong,.app-profile-summary-copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.app-profile-summary-copy strong { font-size: .88rem; }.app-profile-summary-copy small { color: var(--app-muted); font-size: .76rem; }
+.app-profile-link { display: flex; min-height: 42px; align-items: center; gap: 10px; padding: 0 11px; border-radius: 9px; color: var(--app-text); font-size: .84rem; font-weight: 600; text-decoration: none; }.app-profile-link:hover { background: var(--app-primary-light); color: var(--app-primary); }
