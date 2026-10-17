@@ -1,4 +1,4 @@
-export type Role = "USER" | "ADMIN";
+export type Role = 'USER' | 'ADMIN';
 
 export interface User {
   id: string;
@@ -10,7 +10,7 @@ export interface User {
   gender: string;
   phone: string;
   department: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   createdAt: string;
   isVerified: boolean;
 }

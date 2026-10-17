@@ -1,22 +1,11 @@
-import {
-  Alert,
-  Button,
-  Spinner,
-} from "react-bootstrap";
-import {
-  Navigate,
-  Outlet,
-} from "react-router";
+import { Alert, Button, Spinner } from 'react-bootstrap';
+import { Navigate, Outlet } from 'react-router';
 
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from '../../context/AuthContext';
 
 export default function ProtectedRoute() {
-  const {
-    isAuthenticated,
-    isLoading,
-    authError,
-    retryAuthentication,
-  } = useAuth();
+  const { isAuthenticated, isLoading, authError, retryAuthentication } =
+    useAuth();
 
   if (isLoading) {
     return (
@@ -43,12 +32,7 @@ export default function ProtectedRoute() {
   }
 
   if (!isAuthenticated) {
-    return (
-      <Navigate
-        to="/login"
-        replace
-      />
-    );
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

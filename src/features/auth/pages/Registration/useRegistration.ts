@@ -1,13 +1,13 @@
-import { useState, type FormEvent } from "react";
-import { useNavigate } from "react-router";
-import type { RegistrationForm } from "./registration.types";
+import { useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router';
+import type { RegistrationForm } from './registration.types';
 
 const initialForm: RegistrationForm = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  mobileNumber: "",
-  address: "",
+  firstName: '',
+  lastName: '',
+  email: '',
+  mobileNumber: '',
+  address: '',
 };
 
 export function useRegistration() {
@@ -16,7 +16,7 @@ export function useRegistration() {
 
   const updateField = <K extends keyof RegistrationForm>(
     field: K,
-    value: RegistrationForm[K],
+    value: RegistrationForm[K]
   ) => {
     setForm((currentForm) => ({ ...currentForm, [field]: value }));
   };
@@ -26,7 +26,7 @@ export function useRegistration() {
 
     // Registration API will be added later.
     console.log(form);
-    navigate("/login");
+    navigate('/login');
   };
 
   return { form, updateField, handleSubmit };

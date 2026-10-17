@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { Outlet } from "react-router";
+import { useState } from 'react';
+import { Outlet } from 'react-router';
 
-import AppNavbar from "../AppNavbar/AppNavbar";
-import Sidebar from "../Sidebar/Sidebar";
+import AppNavbar from '../AppNavbar/AppNavbar';
+import Sidebar from '../Sidebar/Sidebar';
 
-import "./AppLayout.css";
+import './AppLayout.css';
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(
-    () => typeof window !== "undefined" && window.innerWidth >= 768,
+    () => typeof window !== 'undefined' && window.innerWidth >= 768
   );
 
   return (
@@ -17,7 +17,7 @@ export default function AppLayout() {
         sidebarOpen={sidebarOpen}
         onSidebarToggle={() => setSidebarOpen((isOpen) => !isOpen)}
       />
-      <div className={`dashboard-page${sidebarOpen ? " sidebar-open" : ""}`}>
+      <div className={`dashboard-page${sidebarOpen ? ' sidebar-open' : ''}`}>
         <Sidebar isOpen={sidebarOpen} />
         {sidebarOpen && (
           <button

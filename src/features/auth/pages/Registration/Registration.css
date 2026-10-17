@@ -10,5 +10,6 @@
 
 .registration-page__content .form-check-input:focus {
   border-color: var(--app-primary);
-  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--app-primary) 25%, transparent);
+  box-shadow: 0 0 0 0.25rem
+    color-mix(in srgb, var(--app-primary) 25%, transparent);
 }

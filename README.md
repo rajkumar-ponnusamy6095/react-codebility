@@ -42,14 +42,14 @@ environment; see [API and environment configuration](#api-and-environment-config
 
 ## Available commands
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Start the Vite development server with hot module replacement. |
-| `npm run build` | Type-check the application and create a production build in `dist/`. |
-| `npm run preview` | Serve the production build locally (run `npm run build` first). |
-| `npm test` | Run the Vitest test suite once. |
-| `npm run test:coverage` | Run tests and generate coverage output. |
-| `npm run lint` | Run ESLint across the repository. |
+| Command                 | Purpose                                                              |
+| ----------------------- | -------------------------------------------------------------------- |
+| `npm run dev`           | Start the Vite development server with hot module replacement.       |
+| `npm run build`         | Type-check the application and create a production build in `dist/`. |
+| `npm run preview`       | Serve the production build locally (run `npm run build` first).      |
+| `npm test`              | Run the Vitest test suite once.                                      |
+| `npm run test:coverage` | Run tests and generate coverage output.                              |
+| `npm run lint`          | Run ESLint across the repository.                                    |
 
 ## Project structure
 
@@ -118,14 +118,14 @@ The root router discovers `src/features/*/routes.tsx` automatically. Export an
 `access` level and a `routes` array from the feature's `routes.tsx`:
 
 ```tsx
-import { createElement, lazy } from "react";
-import type { RouteObject } from "react-router";
+import { createElement, lazy } from 'react';
+import type { RouteObject } from 'react-router';
 
-export const access = "authenticated";
+export const access = 'authenticated';
 export const routes = [
   {
-    path: "/reports",
-    element: createElement(lazy(() => import("./pages/ReportsPage"))),
+    path: '/reports',
+    element: createElement(lazy(() => import('./pages/ReportsPage'))),
   },
 ] satisfies RouteObject[];
 ```
@@ -187,21 +187,21 @@ typography globally. A system sans-serif stack is used as a fallback.
 
 The API base URL is combined with the following paths:
 
-| Method | Path | Purpose |
-| --- | --- | --- |
-| `POST` | `/v1/accounts/authenticate` | Authenticate with email and password; returns an email and JWT. |
-| `GET` | `/v1/accounts/me` | Load the current authenticated account. |
-| `POST` | `/v1/accounts/register` | Register an account and initiate email verification. |
-| `POST` | `/v1/accounts/forgot-password` | Request a password-reset email. |
-| `POST` | `/v1/accounts/validate-reset-token` | Validate a password-reset token. |
-| `POST` | `/v1/accounts/reset-password` | Set a new password using a reset token. |
-| `POST` | `/v1/accounts/change-password` | Change the authenticated account password. |
-| `POST` | `/v1/accounts/verify-email` | Verify an email using its token. |
-| `GET` | `/v1/accounts` | List accounts; returns `data` and `pagination`. |
-| `GET` | `/v1/accounts/:id` | Load an account. |
-| `POST` | `/v1/accounts` | Create an account. |
-| `PUT` | `/v1/accounts/:id` | Update an account. |
-| `DELETE` | `/v1/accounts/:id` | Delete an account. |
+| Method   | Path                                | Purpose                                                         |
+| -------- | ----------------------------------- | --------------------------------------------------------------- |
+| `POST`   | `/v1/accounts/authenticate`         | Authenticate with email and password; returns an email and JWT. |
+| `GET`    | `/v1/accounts/me`                   | Load the current authenticated account.                         |
+| `POST`   | `/v1/accounts/register`             | Register an account and initiate email verification.            |
+| `POST`   | `/v1/accounts/forgot-password`      | Request a password-reset email.                                 |
+| `POST`   | `/v1/accounts/validate-reset-token` | Validate a password-reset token.                                |
+| `POST`   | `/v1/accounts/reset-password`       | Set a new password using a reset token.                         |
+| `POST`   | `/v1/accounts/change-password`      | Change the authenticated account password.                      |
+| `POST`   | `/v1/accounts/verify-email`         | Verify an email using its token.                                |
+| `GET`    | `/v1/accounts`                      | List accounts; returns `data` and `pagination`.                 |
+| `GET`    | `/v1/accounts/:id`                  | Load an account.                                                |
+| `POST`   | `/v1/accounts`                      | Create an account.                                              |
+| `PUT`    | `/v1/accounts/:id`                  | Update an account.                                              |
+| `DELETE` | `/v1/accounts/:id`                  | Delete an account.                                              |
 
 Authentication sends `{ "email": "...", "password": "..." }` and expects
 `{ "email": "...", "jwtToken": "..." }`. The JWT and current account are stored

@@ -1,37 +1,26 @@
-import { useEffect, useState } from "react";
-import {
-  Alert,
-  Button,
-  Card,
-  Col,
-  Form,
-  Row,
-  Spinner,
-} from "react-bootstrap";
-import { useNavigate, useParams } from "react-router";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import isNil from "lodash/isNil";
+import { useEffect, useState } from 'react';
+import { Alert, Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import isNil from 'lodash/isNil';
 
-import { createUser, getUser, updateUser } from "../../services/userService";
-import { DEPARTMENTS, GENDERS } from "../../../../shared/accountOptions";
-import {
-  userSchema,
-  type UserFormData,
-} from "./user.schema";
-import type { User } from "../../types/user.types";
+import { createUser, getUser, updateUser } from '../../services/userService';
+import { DEPARTMENTS, GENDERS } from '../../../../shared/accountOptions';
+import { userSchema, type UserFormData } from './user.schema';
+import type { User } from '../../types/user.types';
 
-import "./Users.css";
-import "./UserForm.css";
+import './Users.css';
+import './UserForm.css';
 
-const initialFormData: Omit<UserFormData, "department"> = {
-  firstName: "",
-  lastName: "",
-  gender: "other",
-  email: "",
-  phone: "",
-  role: "user",
-  status: "active",
+const initialFormData: Omit<UserFormData, 'department'> = {
+  firstName: '',
+  lastName: '',
+  gender: 'other',
+  email: '',
+  phone: '',
+  role: 'user',
+  status: 'active',
 };
 
 export default function UserForm() {
@@ -39,8 +28,8 @@ export default function UserForm() {
   const { userId } = useParams();
   const isEditing = !isNil(userId);
   const [loading, setLoading] = useState(isEditing);
-  const [loadError, setLoadError] = useState("");
-  const [formError, setFormError] = useState("");
+  const [loadError, setLoadError] = useState('');
+  const [formError, setFormError] = useState('');
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
   const {
@@ -51,7 +40,7 @@ export default function UserForm() {
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: initialFormData,
-    mode: "onBlur",
+    mode: 'onBlur',
   });
 
   useEffect(() => {
@@ -64,26 +53,26 @@ export default function UserForm() {
     const loadUser = async () => {
       try {
         setLoading(true);
-        setLoadError("");
+        setLoadError('');
         if (isNil(userId)) {
-          throw new Error("A user ID is required to edit a user.");
+          throw new Error('A user ID is required to edit a user.');
         }
 
         if (!userId.trim()) {
-          throw new Error("User not found");
+          throw new Error('User not found');
         }
 
         const user = await getUser(userId);
 
         if (isActive) {
           const department = DEPARTMENTS.find(
-            (option) => option === user.department,
+            (option) => option === user.department
           );
           setEditingUser(user);
           reset({
             firstName: user.firstName,
             lastName: user.lastName,
-            gender: user.gender.toLowerCase() as UserFormData["gender"],
+            gender: user.gender.toLowerCase() as UserFormData['gender'],
             email: user.email,
             phone: user.phone,
             role: user.role,
@@ -94,7 +83,7 @@ export default function UserForm() {
       } catch (error) {
         if (isActive) {
           setLoadError(
-            error instanceof Error ? error.message : "Failed to load user",
+            error instanceof Error ? error.message : 'Failed to load user'
           );
         }
       } finally {
@@ -113,24 +102,26 @@ export default function UserForm() {
 
   const handleSave = async (data: UserFormData) => {
     if (isEditing && isNil(editingUser)) {
-      setFormError("The user to update is unavailable. Please reload the page.");
+      setFormError(
+        'The user to update is unavailable. Please reload the page.'
+      );
       return;
     }
 
     try {
-      setFormError("");
-      const action = editingUser ? "updated" : "created";
+      setFormError('');
+      const action = editingUser ? 'updated' : 'created';
       const savedUser = editingUser
         ? await updateUser(editingUser.id, data)
         : await createUser(data);
-      navigate("/users", {
+      navigate('/users', {
         state: {
           userNotification: `User "${savedUser.name}" ${action} successfully.`,
         },
       });
     } catch (error) {
       setFormError(
-        error instanceof Error ? error.message : "Failed to save user",
+        error instanceof Error ? error.message : 'Failed to save user'
       );
     }
   };
@@ -141,15 +132,18 @@ export default function UserForm() {
         <div className="user-form-header-content">
           <div>
             <span className="user-form-eyebrow">WORKSPACE DIRECTORY</span>
-            <h1>{isEditing ? "Edit User" : "Add User"}</h1>
+            <h1>{isEditing ? 'Edit User' : 'Add User'}</h1>
             <p>
               {isEditing
-                ? "Review roles, contact details, and account access."
-                : "Add a trusted teammate with the right access from day one."}
+                ? 'Review roles, contact details, and account access.'
+                : 'Add a trusted teammate with the right access from day one.'}
             </p>
           </div>
           <span className="user-form-header-icon" aria-hidden="true">
-            <i className={`bi ${isEditing ? "bi-person-gear" : "bi-person-plus-fill"}`} aria-hidden="true" />
+            <i
+              className={`bi ${isEditing ? 'bi-person-gear' : 'bi-person-plus-fill'}`}
+              aria-hidden="true"
+            />
           </span>
         </div>
       </div>
@@ -173,11 +167,15 @@ export default function UserForm() {
                 <i className="bi bi-card-checklist" aria-hidden="true" />
               </span>
               <div>
-                <strong>{isEditing ? "Keep this account accurate" : "Start with the essentials"}</strong>
+                <strong>
+                  {isEditing
+                    ? 'Keep this account accurate'
+                    : 'Start with the essentials'}
+                </strong>
                 <span>
                   {isEditing
-                    ? "These details control how this user appears and what they can access."
-                    : "Add contact details first, then choose the role and status that fit this account."}
+                    ? 'These details control how this user appears and what they can access.'
+                    : 'Add contact details first, then choose the role and status that fit this account.'}
                 </span>
               </div>
             </div>
@@ -185,7 +183,7 @@ export default function UserForm() {
               <Alert
                 variant="danger"
                 dismissible
-                onClose={() => setFormError("")}
+                onClose={() => setFormError('')}
               >
                 {formError}
               </Alert>
@@ -198,7 +196,7 @@ export default function UserForm() {
                     <Form.Label>First name</Form.Label>
                     <Form.Control
                       type="text"
-                      {...register("firstName")}
+                      {...register('firstName')}
                       isInvalid={!!errors.firstName}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -212,7 +210,7 @@ export default function UserForm() {
                     <Form.Label>Last name</Form.Label>
                     <Form.Control
                       type="text"
-                      {...register("lastName")}
+                      {...register('lastName')}
                       isInvalid={!!errors.lastName}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -228,7 +226,7 @@ export default function UserForm() {
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                       type="email"
-                      {...register("email")}
+                      {...register('email')}
                       isInvalid={!!errors.email}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -240,7 +238,7 @@ export default function UserForm() {
                   <Form.Group className="mb-3" controlId="user-gender">
                     <Form.Label>Gender</Form.Label>
                     <Form.Select
-                      {...register("gender")}
+                      {...register('gender')}
                       isInvalid={!!errors.gender}
                     >
                       {GENDERS.map((gender) => (
@@ -264,7 +262,7 @@ export default function UserForm() {
                       type="tel"
                       maxLength={20}
                       placeholder="Enter phone number"
-                      {...register("phone")}
+                      {...register('phone')}
                       isInvalid={!!errors.phone}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -276,7 +274,7 @@ export default function UserForm() {
                   <Form.Group className="mb-3" controlId="user-department">
                     <Form.Label>Department</Form.Label>
                     <Form.Select
-                      {...register("department")}
+                      {...register('department')}
                       isInvalid={!!errors.department}
                     >
                       <option value="">Select a department</option>
@@ -298,7 +296,7 @@ export default function UserForm() {
                   <Form.Group className="mb-3" controlId="user-role">
                     <Form.Label>Role</Form.Label>
                     <Form.Select
-                      {...register("role")}
+                      {...register('role')}
                       isInvalid={!!errors.role}
                     >
                       <option value="user">user</option>
@@ -314,7 +312,7 @@ export default function UserForm() {
                   <Form.Group className="mb-4" controlId="user-status">
                     <Form.Label>Status</Form.Label>
                     <Form.Select
-                      {...register("status")}
+                      {...register('status')}
                       isInvalid={!!errors.status}
                     >
                       <option value="active">active</option>
@@ -330,7 +328,7 @@ export default function UserForm() {
               <div className="d-flex justify-content-end gap-2">
                 <Button
                   variant="secondary"
-                  onClick={() => navigate("/users")}
+                  onClick={() => navigate('/users')}
                   disabled={isSubmitting}
                 >
                   Cancel
@@ -342,18 +340,18 @@ export default function UserForm() {
                 >
                   {isSubmitting
                     ? isEditing
-                      ? "Updating User..."
-                      : "Creating User..."
+                      ? 'Updating User...'
+                      : 'Creating User...'
                     : isEditing
-                      ? "Update User"
-                      : "Create User"}
+                      ? 'Update User'
+                      : 'Create User'}
                 </Button>
               </div>
             </Form>
           </Card.Body>
         </Card>
       ) : (
-        <Button variant="secondary" onClick={() => navigate("/users")}>
+        <Button variant="secondary" onClick={() => navigate('/users')}>
           Back to Users
         </Button>
       )}

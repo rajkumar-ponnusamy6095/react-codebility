@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Alert,
   Button,
@@ -7,39 +7,39 @@ import {
   Container,
   Form,
   Row,
-} from "react-bootstrap";
-import { Link } from "react-router";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import PlainNavBar from "../../../../components/PlainNavBar/PlainNavBar";
-import { requestPasswordReset } from "../../services/authService";
+} from 'react-bootstrap';
+import { Link } from 'react-router';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import PlainNavBar from '../../../../components/PlainNavBar/PlainNavBar';
+import { requestPasswordReset } from '../../services/authService';
 
 const forgotPasswordSchema = z.object({
   email: z
     .string()
     .trim()
-    .min(1, "Email is required")
-    .email("Enter a valid email address"),
+    .min(1, 'Email is required')
+    .email('Enter a valid email address'),
 });
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPassword() {
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    setError("");
-    setSuccessMessage("");
+    setError('');
+    setSuccessMessage('');
 
     try {
       const response = await requestPasswordReset(data.email);
@@ -48,7 +48,7 @@ export default function ForgotPassword() {
       setError(
         submitError instanceof Error
           ? submitError.message
-          : "Unable to request a password reset",
+          : 'Unable to request a password reset'
       );
     }
   };
@@ -73,7 +73,7 @@ export default function ForgotPassword() {
                   <Alert
                     variant="danger"
                     dismissible
-                    onClose={() => setError("")}
+                    onClose={() => setError('')}
                   >
                     {error}
                   </Alert>
@@ -91,7 +91,7 @@ export default function ForgotPassword() {
                         type="email"
                         placeholder="Enter email"
                         autoComplete="email"
-                        {...register("email")}
+                        {...register('email')}
                         isInvalid={!!errors.email}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -105,7 +105,7 @@ export default function ForgotPassword() {
                       className="app-primary w-100"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Sending..." : "Send Reset Instructions"}
+                      {isSubmitting ? 'Sending...' : 'Send Reset Instructions'}
                     </Button>
                   </Form>
                 )}

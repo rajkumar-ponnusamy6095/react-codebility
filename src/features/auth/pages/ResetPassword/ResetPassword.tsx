@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Button,
@@ -7,48 +7,48 @@ import {
   Container,
   Form,
   Row,
-} from "react-bootstrap";
-import { Link, useSearchParams } from "react-router";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import PlainNavBar from "../../../../components/PlainNavBar/PlainNavBar";
+} from 'react-bootstrap';
+import { Link, useSearchParams } from 'react-router';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import PlainNavBar from '../../../../components/PlainNavBar/PlainNavBar';
 import {
   resetPassword as resetPasswordApi,
   validatePasswordResetToken,
-} from "../../services/authService";
+} from '../../services/authService';
 
 const resetPasswordSchema = z
   .object({
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
   });
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
-type TokenStatus = "validating" | "ready" | "invalid" | "success";
+type TokenStatus = 'validating' | 'ready' | 'invalid' | 'success';
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token")?.trim() ?? "";
+  const token = searchParams.get('token')?.trim() ?? '';
   const validationStarted = useRef<string | null>(null);
   const [tokenStatus, setTokenStatus] = useState<TokenStatus>(
-    token ? "validating" : "invalid",
+    token ? 'validating' : 'invalid'
   );
   const [error, setError] = useState(
-    token ? "" : "The password reset link is missing its token.",
+    token ? '' : 'The password reset link is missing its token.'
   );
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState('');
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -60,14 +60,14 @@ export default function ResetPassword() {
     const validateToken = async () => {
       try {
         await validatePasswordResetToken(token);
-        setTokenStatus("ready");
+        setTokenStatus('ready');
       } catch (validationError) {
         setError(
           validationError instanceof Error
             ? validationError.message
-            : "Unable to validate the password reset link",
+            : 'Unable to validate the password reset link'
         );
-        setTokenStatus("invalid");
+        setTokenStatus('invalid');
       }
     };
 
@@ -75,22 +75,22 @@ export default function ResetPassword() {
   }, [token]);
 
   const onSubmit = async (data: ResetPasswordFormData) => {
-    setError("");
-    setSuccessMessage("");
+    setError('');
+    setSuccessMessage('');
 
     try {
       const response = await resetPasswordApi(
         token,
         data.password,
-        data.confirmPassword,
+        data.confirmPassword
       );
       setSuccessMessage(response.message);
-      setTokenStatus("success");
+      setTokenStatus('success');
     } catch (submitError) {
       setError(
         submitError instanceof Error
           ? submitError.message
-          : "Unable to reset your password",
+          : 'Unable to reset your password'
       );
     }
   };
@@ -113,20 +113,20 @@ export default function ResetPassword() {
                 {error && (
                   <Alert
                     variant="danger"
-                    dismissible={tokenStatus !== "invalid"}
-                    onClose={() => setError("")}
+                    dismissible={tokenStatus !== 'invalid'}
+                    onClose={() => setError('')}
                   >
                     {error}
                   </Alert>
                 )}
 
-                {tokenStatus === "validating" && (
+                {tokenStatus === 'validating' && (
                   <p className="text-center text-muted" role="status">
                     Validating your password reset link...
                   </p>
                 )}
 
-                {tokenStatus === "ready" && (
+                {tokenStatus === 'ready' && (
                   <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <Form.Group className="mb-3" controlId="password">
                       <Form.Label>New password</Form.Label>
@@ -134,7 +134,7 @@ export default function ResetPassword() {
                         type="password"
                         placeholder="Enter new password"
                         autoComplete="new-password"
-                        {...register("password")}
+                        {...register('password')}
                         isInvalid={!!errors.password}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -148,7 +148,7 @@ export default function ResetPassword() {
                         type="password"
                         placeholder="Confirm new password"
                         autoComplete="new-password"
-                        {...register("confirmPassword")}
+                        {...register('confirmPassword')}
                         isInvalid={!!errors.confirmPassword}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -162,18 +162,18 @@ export default function ResetPassword() {
                       className="app-primary w-100"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Resetting..." : "Reset Password"}
+                      {isSubmitting ? 'Resetting...' : 'Reset Password'}
                     </Button>
                   </Form>
                 )}
 
-                {tokenStatus === "invalid" && (
+                {tokenStatus === 'invalid' && (
                   <div className="text-center">
                     <Link to="/forgot-password">Request a new reset link</Link>
                   </div>
                 )}
 
-                {tokenStatus === "success" && (
+                {tokenStatus === 'success' && (
                   <Alert variant="success">{successMessage}</Alert>
                 )}
 

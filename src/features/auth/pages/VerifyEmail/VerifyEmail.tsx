@@ -1,26 +1,20 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  Alert,
-  Card,
-  Col,
-  Container,
-  Row,
-} from "react-bootstrap";
-import { Link, useSearchParams } from "react-router";
-import PlainNavBar from "../../../../components/PlainNavBar/PlainNavBar";
-import { verifyEmail } from "../../services/authService";
+import { useEffect, useRef, useState } from 'react';
+import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
+import { Link, useSearchParams } from 'react-router';
+import PlainNavBar from '../../../../components/PlainNavBar/PlainNavBar';
+import { verifyEmail } from '../../services/authService';
 
-type VerificationStatus = "verifying" | "success" | "error";
+type VerificationStatus = 'verifying' | 'success' | 'error';
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token")?.trim() ?? "";
+  const token = searchParams.get('token')?.trim() ?? '';
   const verificationStarted = useRef<string | null>(null);
   const [status, setStatus] = useState<VerificationStatus>(
-    token ? "verifying" : "error",
+    token ? 'verifying' : 'error'
   );
   const [message, setMessage] = useState(
-    token ? "" : "The email verification link is missing its token.",
+    token ? '' : 'The email verification link is missing its token.'
   );
 
   useEffect(() => {
@@ -33,14 +27,14 @@ export default function VerifyEmail() {
       try {
         const response = await verifyEmail(token);
         setMessage(response.message);
-        setStatus("success");
+        setStatus('success');
       } catch (verificationError) {
         setMessage(
           verificationError instanceof Error
             ? verificationError.message
-            : "Unable to verify your email",
+            : 'Unable to verify your email'
         );
-        setStatus("error");
+        setStatus('error');
       }
     };
 
@@ -57,21 +51,21 @@ export default function VerifyEmail() {
               <Card.Body className="p-4 text-center">
                 <h2 className="mb-3">Verify Email</h2>
 
-                {status === "verifying" && (
+                {status === 'verifying' && (
                   <p className="text-muted" role="status">
                     Verifying your email address...
                   </p>
                 )}
 
-                {status === "error" && (
+                {status === 'error' && (
                   <Alert variant="danger">{message}</Alert>
                 )}
 
-                {status === "success" && (
+                {status === 'success' && (
                   <Alert variant="success">{message}</Alert>
                 )}
 
-                {status !== "verifying" && (
+                {status !== 'verifying' && (
                   <Link to="/login">Continue to login</Link>
                 )}
               </Card.Body>

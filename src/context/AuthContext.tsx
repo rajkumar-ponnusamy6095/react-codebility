@@ -6,11 +6,11 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from "react";
+} from 'react';
 
-import type { LoginResponse, User } from "../features/auth/types/auth.types";
-import { ApiError } from "../services/api";
-import { getCurrentUser } from "../features/auth/services/authService";
+import type { LoginResponse, User } from '../features/auth/types/auth.types';
+import { ApiError } from '../services/api';
+import { getCurrentUser } from '../features/auth/services/authService';
 
 interface AuthContextType {
   user: User | null;
@@ -20,27 +20,19 @@ interface AuthContextType {
   authError: string | null;
   login: (response: LoginResponse, user: User) => void;
   logout: () => Promise<void>;
-  updateUserName: (
-    name: string,
-    firstName?: string,
-    lastName?: string,
-  ) => void;
+  updateUserName: (name: string, firstName?: string, lastName?: string) => void;
   retryAuthentication: () => void;
 }
 
-const AuthContext = createContext<
-  AuthContextType | undefined
->(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider = ({
-  children,
-}: AuthProviderProps) => {
-  const [token, setToken] = useState<string | null>(
-    () => localStorage.getItem("token")
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [token, setToken] = useState<string | null>(() =>
+    localStorage.getItem('token')
   );
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(Boolean(token));
@@ -50,7 +42,7 @@ export const AuthProvider = ({
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
     }
   }, [user]);
 
@@ -71,7 +63,7 @@ export const AuthProvider = ({
         const currentUser = await getCurrentUser(token);
         if (isActive) {
           setUser(currentUser);
-          localStorage.setItem("user", JSON.stringify(currentUser));
+          localStorage.setItem('user', JSON.stringify(currentUser));
         }
       } catch (error) {
         if (!isActive) {
@@ -84,13 +76,13 @@ export const AuthProvider = ({
         ) {
           setToken(null);
           setUser(null);
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
         } else {
           setAuthError(
             error instanceof Error
               ? error.message
-              : "Failed to verify the current session",
+              : 'Failed to verify the current session'
           );
         }
       } finally {
@@ -115,37 +107,36 @@ export const AuthProvider = ({
     setUser(currentUser);
     setSessionAttempt((attempt) => attempt + 1);
 
-    localStorage.setItem("token", response.jwtToken);
-    localStorage.setItem("user", JSON.stringify(currentUser));
+    localStorage.setItem('token', response.jwtToken);
+    localStorage.setItem('user', JSON.stringify(currentUser));
   };
 
-  const updateUserName = useCallback((
-    name: string,
-    firstName?: string,
-    lastName?: string,
-  ) => {
-    setUser((currentUser) => {
-      if (!currentUser) {
-        return currentUser;
-      }
+  const updateUserName = useCallback(
+    (name: string, firstName?: string, lastName?: string) => {
+      setUser((currentUser) => {
+        if (!currentUser) {
+          return currentUser;
+        }
 
-      const updatedUser = {
-        ...currentUser,
-        name,
-        ...(firstName === undefined ? {} : { firstName }),
-        ...(lastName === undefined ? {} : { lastName }),
-      };
-      return updatedUser;
-    });
-  }, []);
+        const updatedUser = {
+          ...currentUser,
+          name,
+          ...(firstName === undefined ? {} : { firstName }),
+          ...(lastName === undefined ? {} : { lastName }),
+        };
+        return updatedUser;
+      });
+    },
+    []
+  );
 
   const logout = async () => {
     setToken(null);
     setUser(null);
     setAuthError(null);
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   };
 
   const retryAuthentication = () => {
@@ -179,9 +170,7 @@ export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error(
-      "useAuth must be used inside AuthProvider"
-    );
+    throw new Error('useAuth must be used inside AuthProvider');
   }
 
   return context;

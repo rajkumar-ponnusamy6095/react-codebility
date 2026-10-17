@@ -1,5 +1,5 @@
 :root {
-  --app-font-family: "DM Sans", "Segoe UI", sans-serif;
+  --app-font-family: 'DM Sans', 'Segoe UI', sans-serif;
   --app-primary: #2563eb;
   --app-primary-dark: #1d4ed8;
   --app-primary-light: #dbeafe;
@@ -13,12 +13,20 @@
   --app-border: #e2e8f0;
   --app-muted: #64748b;
   --app-card-bg: var(--app-surface);
-  --app-table-header-bg: color-mix(in srgb, var(--app-primary-dark) 45%, #1e293b);
+  --app-table-header-bg: color-mix(
+    in srgb,
+    var(--app-primary-dark) 45%,
+    #1e293b
+  );
   --app-table-header-color: #f8fafc;
-  --app-table-header-border: color-mix(in srgb, var(--app-table-header-bg) 80%, #000);
+  --app-table-header-border: color-mix(
+    in srgb,
+    var(--app-table-header-bg) 80%,
+    #000
+  );
 }
 
-[data-theme="blue"] {
+[data-theme='blue'] {
   --app-primary: #2563eb;
   --app-primary-dark: #1d4ed8;
   --app-primary-light: #dbeafe;
@@ -26,7 +34,7 @@
   --app-gradient-end: #06b6d4;
 }
 
-[data-theme="orange"] {
+[data-theme='orange'] {
   --app-primary: #f97316;
   --app-primary-dark: #ea580c;
   --app-primary-light: #ffedd5;
@@ -34,7 +42,7 @@
   --app-gradient-end: #f59e0b;
 }
 
-[data-theme="pink"] {
+[data-theme='pink'] {
   --app-primary: #ec4899;
   --app-primary-dark: #db2777;
   --app-primary-light: #fce7f3;
@@ -42,7 +50,7 @@
   --app-gradient-end: #f43f5e;
 }
 
-[data-theme="green"] {
+[data-theme='green'] {
   --app-primary: #10b981;
   --app-primary-dark: #059669;
   --app-primary-light: #d1fae5;
@@ -50,7 +58,7 @@
   --app-gradient-end: #14b8a6;
 }
 
-[data-theme="yellow"] {
+[data-theme='yellow'] {
   --app-primary: #eab308;
   --app-primary-dark: #ca8a04;
   --app-primary-light: #fef9c3;
@@ -58,7 +66,7 @@
   --app-gradient-end: #f59e0b;
 }
 
-[data-theme="violet"] {
+[data-theme='violet'] {
   --app-primary: #8b5cf6;
   --app-primary-dark: #7c3aed;
   --app-primary-light: #ede9fe;
@@ -83,7 +91,8 @@ a:hover {
   border-bottom: 1px solid var(--app-border);
   background: var(--app-primary-dark) !important;
   color: #fff !important;
-  box-shadow: 0 2px 12px color-mix(in srgb, var(--app-primary-dark) 25%, transparent);
+  box-shadow: 0 2px 12px
+    color-mix(in srgb, var(--app-primary-dark) 25%, transparent);
   border-bottom-color: color-mix(in srgb, var(--app-primary-dark) 80%, #000);
 }
 
@@ -105,7 +114,8 @@ a:hover {
 .app-navbar .navbar-toggler:hover,
 .app-navbar .navbar-toggler:focus {
   border-color: var(--app-primary);
-  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--app-primary) 20%, transparent);
+  box-shadow: 0 0 0 0.15rem
+    color-mix(in srgb, var(--app-primary) 20%, transparent);
 }
 
 .app-navbar .theme-switcher .dropdown-toggle {
@@ -302,7 +312,8 @@ a:hover {
     var(--app-gradient-end)
   );
   color: #f8fafc;
-  box-shadow: 0 12px 32px color-mix(in srgb, var(--app-primary-dark) 35%, transparent);
+  box-shadow: 0 12px 32px
+    color-mix(in srgb, var(--app-primary-dark) 35%, transparent);
 }
 
 .notification-toast-content i,
@@ -339,7 +350,8 @@ a:hover {
 
 .auth-card .form-control:focus {
   border-color: var(--app-primary);
-  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--app-primary) 25%, transparent);
+  box-shadow: 0 0 0 0.25rem
+    color-mix(in srgb, var(--app-primary) 25%, transparent);
 }
 
 .app-primary {

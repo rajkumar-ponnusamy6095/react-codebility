@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 import {
   Alert,
@@ -11,16 +11,13 @@ import {
   Row,
   Spinner,
   Table,
-} from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router";
-import isNil from "lodash/isNil";
+} from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router';
+import isNil from 'lodash/isNil';
 
-import NotificationToast from "../../../../components/NotificationToast/NotificationToast";
-import {
-  deleteUser,
-  getUsers,
-} from "../../services/userService";
-import { datePipe } from "../../../../utils/datePipe";
+import NotificationToast from '../../../../components/NotificationToast/NotificationToast';
+import { deleteUser, getUsers } from '../../services/userService';
+import { datePipe } from '../../../../utils/datePipe';
 
 import type {
   User,
@@ -28,9 +25,9 @@ import type {
   UserRole,
   UserSortOrder,
   UserStatus,
-} from "../../types/user.types";
+} from '../../types/user.types';
 
-import "./Users.css";
+import './Users.css';
 
 type SortField = keyof User;
 type SortDirection = UserSortOrder;
@@ -48,53 +45,50 @@ export default function Users() {
     totalPages: 1,
   });
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState('');
 
-  const [search, setSearch] =
-    useState("");
+  const [search, setSearch] = useState('');
 
-  const [debouncedSearch, setDebouncedSearch] =
-    useState(search);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  const [role, setRole] = useState<UserRole | "">("");
+  const [role, setRole] = useState<UserRole | ''>('');
 
-  const [status, setStatus] = useState<UserStatus | "">("");
+  const [status, setStatus] = useState<UserStatus | ''>('');
 
-  const [department, setDepartment] = useState("");
+  const [department, setDepartment] = useState('');
 
-  const [sortField, setSortField] =
-    useState<SortField>("id");
+  const [sortField, setSortField] = useState<SortField>('id');
 
-  const [sortDirection, setSortDirection] =
-    useState<SortDirection>("asc");
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
-  const [currentPage, setCurrentPage] =
-    useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [pageSize, setPageSize] = useState<number>(PAGE_SIZE_OPTIONS[0]);
 
   const [refreshVersion, setRefreshVersion] = useState(0);
 
-  const [userToDelete, setUserToDelete] =
-    useState<Pick<User, "id" | "name"> | null>(null);
+  const [userToDelete, setUserToDelete] = useState<Pick<
+    User,
+    'id' | 'name'
+  > | null>(null);
 
-  const [notification, setNotification] = useState("");
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     const state = location.state;
     if (
-      typeof state !== "object" ||
+      typeof state !== 'object' ||
       state === null ||
-      !("userNotification" in state) ||
-      typeof state.userNotification !== "string"
+      !('userNotification' in state) ||
+      typeof state.userNotification !== 'string'
     ) {
       return;
     }
 
+    // Consume the one-time notification passed through router state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setNotification(state.userNotification);
     navigate(location.pathname, { replace: true, state: null });
   }, [location.pathname, location.state, navigate]);
@@ -117,7 +111,7 @@ export default function Users() {
     const loadUsers = async () => {
       try {
         setLoading(true);
-        setError("");
+        setError('');
         const response = await getUsers(
           {
             page: currentPage,
@@ -129,7 +123,7 @@ export default function Users() {
             status: status || undefined,
             department: department || undefined,
           },
-          controller.signal,
+          controller.signal
         );
 
         if (isActive) {
@@ -139,7 +133,7 @@ export default function Users() {
       } catch (error: unknown) {
         if (isActive) {
           setError(
-            error instanceof Error ? error.message : "Failed to load users",
+            error instanceof Error ? error.message : 'Failed to load users'
           );
         }
       } finally {
@@ -172,18 +166,12 @@ export default function Users() {
   /*
    * Change sorting
    */
-  const handleSort = (
-    field: SortField
-  ) => {
+  const handleSort = (field: SortField) => {
     if (sortField === field) {
-      setSortDirection(
-        sortDirection === "asc"
-          ? "desc"
-          : "asc"
-      );
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
       setSortField(field);
-      setSortDirection("asc");
+      setSortDirection('asc');
     }
 
     setCurrentPage(1);
@@ -192,24 +180,15 @@ export default function Users() {
   /*
    * Sort indicator
    */
-  const getSortIcon = (
-    field: SortField
-  ) => {
+  const getSortIcon = (field: SortField) => {
     if (sortField !== field) {
-      return (
-        <i
-          className="bi bi-arrow-down-up"
-          aria-hidden="true"
-        />
-      );
+      return <i className="bi bi-arrow-down-up" aria-hidden="true" />;
     }
 
     return (
       <i
         className={`bi ${
-          sortDirection === "asc"
-            ? "bi-arrow-up"
-            : "bi-arrow-down"
+          sortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'
         }`}
         aria-hidden="true"
       />
@@ -219,20 +198,16 @@ export default function Users() {
   /*
    * Search
    */
-  const handleSearch = (
-    value: string
-  ) => {
+  const handleSearch = (value: string) => {
     setSearch(value);
     setCurrentPage(1);
   };
 
   const handleAdd = () => {
-    navigate("/users/new");
+    navigate('/users/new');
   };
 
-  const handleEdit = (
-    user: User
-  ) => {
+  const handleEdit = (user: User) => {
     navigate(`/users/${user.id}/edit`);
   };
 
@@ -241,12 +216,12 @@ export default function Users() {
    */
   const handleDelete = async () => {
     if (isNil(userToDelete)) {
-      setError("Select a user before deleting.");
+      setError('Select a user before deleting.');
       return;
     }
 
     try {
-      setError("");
+      setError('');
 
       await deleteUser(userToDelete.id);
       setUserToDelete(null);
@@ -254,7 +229,7 @@ export default function Users() {
 
       const newTotalPages = Math.max(
         1,
-        Math.ceil((pagination.total - 1) / pageSize),
+        Math.ceil((pagination.total - 1) / pageSize)
       );
 
       if (currentPage > newTotalPages) {
@@ -265,28 +240,21 @@ export default function Users() {
       if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError("Failed to delete user");
+        setError('Failed to delete user');
       }
     }
   };
 
   const firstVisibleUser =
-    pagination.total === 0
-      ? 0
-      : (currentPage - 1) * pageSize + 1;
-  const lastVisibleUser = Math.min(
-    currentPage * pageSize,
-    pagination.total,
-  );
+    pagination.total === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const lastVisibleUser = Math.min(currentPage * pageSize, pagination.total);
 
   const visiblePages = Array.from(
-    new Set([
-      1,
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-      totalPages,
-    ].filter((page) => page >= 1 && page <= totalPages)),
+    new Set(
+      [1, currentPage - 1, currentPage, currentPage + 1, totalPages].filter(
+        (page) => page >= 1 && page <= totalPages
+      )
+    )
   ).sort((a, b) => a - b);
 
   const paginationItems = visiblePages.flatMap((page, index) => {
@@ -302,14 +270,14 @@ export default function Users() {
             onClick={() => setCurrentPage(previousPage + 1)}
           >
             {previousPage + 1}
-          </Pagination.Item>,
+          </Pagination.Item>
         );
       } else {
         items.push(
           <Pagination.Ellipsis
             key={`ellipsis-${previousPage}-${page}`}
             disabled
-          />,
+          />
         );
       }
     }
@@ -322,7 +290,7 @@ export default function Users() {
         aria-label={`Go to page ${page}`}
       >
         {page}
-      </Pagination.Item>,
+      </Pagination.Item>
     );
 
     return items;
@@ -330,37 +298,23 @@ export default function Users() {
 
   return (
     <div className="users-page">
-
       {/* Header */}
       <div className="users-header">
-
         <div>
           <h1>Users</h1>
 
-          <p>
-            Manage application users
-          </p>
+          <p>Manage application users</p>
         </div>
 
-        <Button
-          className="app-primary"
-          onClick={handleAdd}
-        >
+        <Button className="app-primary" onClick={handleAdd}>
           <i className="bi bi-person-plus-fill me-2" aria-hidden="true" />
           Add User
         </Button>
-
       </div>
 
       {/* Error */}
       {error && (
-        <Alert
-          variant="danger"
-          dismissible
-          onClose={() =>
-            setError("")
-          }
-        >
+        <Alert variant="danger" dismissible onClose={() => setError('')}>
           {error}
         </Alert>
       )}
@@ -368,48 +322,29 @@ export default function Users() {
       {notification && (
         <NotificationToast
           message={notification}
-          onClose={() => setNotification("")}
+          onClose={() => setNotification('')}
         />
       )}
 
       <Card className="users-card">
-
         <Card.Body>
-
           {/* Toolbar */}
           <Row className="align-items-center mb-3">
-
-            <Col
-              xs={12}
-              md={6}
-            >
+            <Col xs={12} md={6}>
               <Form.Control
                 type="search"
                 placeholder="Search users..."
                 value={search}
-                onChange={(event) =>
-                  handleSearch(
-                    event.target.value
-                  )
-                }
+                onChange={(event) => handleSearch(event.target.value)}
               />
             </Col>
 
-            <Col
-              xs={12}
-              md={6}
-              className="text-md-end mt-2 mt-md-0"
-            >
+            <Col xs={12} md={6} className="text-md-end mt-2 mt-md-0">
               <span className="users-count">
-                {pagination.total}{" "}
-                user
-                {pagination.total !==
-                1
-                  ? "s"
-                  : ""}
+                {pagination.total} user
+                {pagination.total !== 1 ? 's' : ''}
               </span>
             </Col>
-
           </Row>
 
           <Row className="mb-3">
@@ -419,7 +354,7 @@ export default function Users() {
                 value={role}
                 onChange={(event) => {
                   const value = event.target.value;
-                  setRole(value === "user" || value === "admin" ? value : "");
+                  setRole(value === 'user' || value === 'admin' ? value : '');
                   setCurrentPage(1);
                 }}
               >
@@ -435,7 +370,7 @@ export default function Users() {
                 onChange={(event) => {
                   const value = event.target.value;
                   setStatus(
-                    value === "active" || value === "inactive" ? value : "",
+                    value === 'active' || value === 'inactive' ? value : ''
                   );
                   setCurrentPage(1);
                 }}
@@ -469,57 +404,27 @@ export default function Users() {
           {loading ? (
             <div className="users-loading">
               <Spinner animation="border" />
-              <span>
-                Loading users...
-              </span>
+              <span>Loading users...</span>
             </div>
           ) : (
             <div className="table-responsive users-table-responsive">
-
-              <Table
-                striped
-                hover
-                className="users-table"
-              >
+              <Table striped hover className="users-table">
                 <thead>
                   <tr>
-
-                    <th
-                      onClick={() =>
-                        handleSort(
-                          "name"
-                        )
-                      }
-                      className="sortable"
-                    >
-                      Name{" "}
-                      {getSortIcon(
-                        "name"
-                      )}
+                    <th onClick={() => handleSort('name')} className="sortable">
+                      Name {getSortIcon('name')}
                     </th>
 
                     <th>Email</th>
 
-                    <th>
-                      Gender
-                    </th>
+                    <th>Gender</th>
 
-                    <th>
-                      Phone
-                    </th>
+                    <th>Phone</th>
 
                     <th>Department</th>
 
-                    <th
-                      onClick={() =>
-                        handleSort("role")
-                      }
-                      className="sortable"
-                    >
-                      Role{" "}
-                      {getSortIcon(
-                        "role"
-                      )}
+                    <th onClick={() => handleSort('role')} className="sortable">
+                      Role {getSortIcon('role')}
                     </th>
 
                     <th>Status</th>
@@ -527,151 +432,113 @@ export default function Users() {
                     <th>Verified</th>
 
                     <th
-                      onClick={() =>
-                        handleSort(
-                          "createdAt"
-                        )
-                      }
+                      onClick={() => handleSort('createdAt')}
                       className="sortable"
                     >
-                      Created{" "}
-                      {getSortIcon(
-                        "createdAt"
-                      )}
+                      Created {getSortIcon('createdAt')}
                     </th>
 
-                    <th>
-                      Actions
-                    </th>
-
+                    <th>Actions</th>
                   </tr>
                 </thead>
 
                 <tbody>
-
-                  {users.length ===
-                  0 ? (
+                  {users.length === 0 ? (
                     <tr>
-                      <td
-                        colSpan={10}
-                        className="text-center py-5"
-                      >
+                      <td colSpan={10} className="text-center py-5">
                         No users found
                       </td>
                     </tr>
                   ) : (
-                    users.map(
-                      (user) => (
-                        <tr
-                          key={user.id}
-                        >
+                    users.map((user) => (
+                      <tr key={user.id}>
+                        <td>
+                          <div className="user-name">
+                            <span className="user-avatar" aria-hidden="true">
+                              {user.name
+                                .split(' ')
+                                .filter(Boolean)
+                                .slice(0, 2)
+                                .map((part) => part[0]?.toUpperCase())
+                                .join('')}
+                            </span>
+                            {user.name}
+                          </div>
+                        </td>
 
-                          <td>
-                            <div className="user-name">
-                              <span className="user-avatar" aria-hidden="true">
-                                {user.name
-                                  .split(" ")
-                                  .filter(Boolean)
-                                  .slice(0, 2)
-                                  .map((part) => part[0]?.toUpperCase())
-                                  .join("")}
-                              </span>
-                              {user.name}
-                            </div>
-                          </td>
+                        <td>{user.email}</td>
 
-                          <td>
-                            {user.email}
-                          </td>
+                        <td className="user-gender">{user.gender}</td>
 
-                          <td className="user-gender">
-                            {user.gender}
-                          </td>
+                        <td>{user.phone}</td>
 
-                          <td>
-                            {
-                              user.phone
-                            }
-                          </td>
+                        <td>{user.department}</td>
 
-                          <td>
-                            {user.department}
-                          </td>
+                        <td className="user-role">{user.role}</td>
 
-                          <td className="user-role">
-                            {user.role}
-                          </td>
+                        <td>
+                          <span
+                            className={`user-status-badge${user.status === 'active' ? ' is-active' : ''}`}
+                          >
+                            <span className="user-status-badge__dot" />
+                            {user.status}
+                          </span>
+                        </td>
 
-                           <td>
-                             <span className={`user-status-badge${user.status === "active" ? " is-active" : ""}`}>
-                               <span className="user-status-badge__dot" />
-                               {user.status}
-                             </span>
-                           </td>
+                        <td>
+                          <span
+                            className={`user-verified-badge${user.isVerified ? ' is-verified' : ''}`}
+                          >
+                            {user.isVerified ? 'Verified' : 'Pending'}
+                          </span>
+                        </td>
 
-                           <td>
-                             <span className={`user-verified-badge${user.isVerified ? " is-verified" : ""}`}>
-                               {user.isVerified ? "Verified" : "Pending"}
-                             </span>
-                           </td>
+                        <td>{datePipe(user.createdAt)}</td>
 
-                          <td>
-                            {
-                              datePipe(user.createdAt)
-                            }
-                          </td>
+                        <td>
+                          <div className="user-actions">
+                            <Button
+                              size="sm"
+                              className="btn-edit"
+                              onClick={() => handleEdit(user)}
+                            >
+                              <i
+                                className="bi bi-pencil-square me-1"
+                                aria-hidden="true"
+                              />
+                              Edit
+                            </Button>
 
-                          <td>
-                            <div className="user-actions">
-
-                              <Button
-                                size="sm"
-                                 className="btn-edit"
-                                onClick={() =>
-                                  handleEdit(
-                                    user
-                                  )
-                                }
-                              >
-                                <i className="bi bi-pencil-square me-1" aria-hidden="true" />
-                                Edit
-                              </Button>
-
-                              <Button
-                                size="sm"
-                                 className="btn-delete"
-                                onClick={() =>
-                                  setUserToDelete({
-                                    id: user.id,
-                                    name: user.name,
-                                  })
-                                }
-                              >
-                                <i className="bi bi-trash3 me-1" aria-hidden="true" />
-                                Delete
-                              </Button>
-
-                            </div>
-                          </td>
-
-                        </tr>
-                      )
-                    )
+                            <Button
+                              size="sm"
+                              className="btn-delete"
+                              onClick={() =>
+                                setUserToDelete({
+                                  id: user.id,
+                                  name: user.name,
+                                })
+                              }
+                            >
+                              <i
+                                className="bi bi-trash3 me-1"
+                                aria-hidden="true"
+                              />
+                              Delete
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
                   )}
-
                 </tbody>
               </Table>
-
             </div>
           )}
 
           {/* Pagination */}
           <div className="users-pagination">
             <div className="users-pagination-controls">
-              <Form.Label
-                className="mb-0"
-                htmlFor="users-page-size"
-              >
+              <Form.Label className="mb-0" htmlFor="users-page-size">
                 Rows per page
               </Form.Label>
               <Form.Select
@@ -693,8 +560,8 @@ export default function Users() {
             </div>
 
             <span className="page-info">
-              Showing {firstVisibleUser}–{lastVisibleUser} of{" "}
-              {pagination.total} users
+              Showing {firstVisibleUser}–{lastVisibleUser} of {pagination.total}{' '}
+              users
             </span>
 
             {totalPages > 1 && (
@@ -713,23 +580,17 @@ export default function Users() {
               </Pagination>
             )}
           </div>
-
         </Card.Body>
-
       </Card>
 
       {/* Delete Confirmation */}
       <Modal
         show={userToDelete !== null}
-        onHide={() =>
-          setUserToDelete(null)
-        }
+        onHide={() => setUserToDelete(null)}
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>
-            Delete User
-          </Modal.Title>
+          <Modal.Title>Delete User</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -737,27 +598,16 @@ export default function Users() {
         </Modal.Body>
 
         <Modal.Footer>
-
-          <Button
-            variant="secondary"
-            onClick={() =>
-              setUserToDelete(null)
-            }
-          >
+          <Button variant="secondary" onClick={() => setUserToDelete(null)}>
             Cancel
           </Button>
 
-          <Button
-            variant="danger"
-            onClick={handleDelete}
-          >
+          <Button variant="danger" onClick={handleDelete}>
             <i className="bi bi-trash3 me-2" aria-hidden="true" />
             Delete
           </Button>
-
         </Modal.Footer>
       </Modal>
-
     </div>
   );
 }

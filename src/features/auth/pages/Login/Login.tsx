@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from 'react';
 
 import {
   Container,
@@ -11,39 +8,23 @@ import {
   Form,
   Button,
   Alert,
-} from "react-bootstrap";
+} from 'react-bootstrap';
 
-import {
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router";
+import { Link, useLocation, useNavigate } from 'react-router';
 
-import {
-  useForm,
-} from "react-hook-form";
+import { useForm } from 'react-hook-form';
 
-import {
-  zodResolver,
-} from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import {
-  useAuth,
-} from "../../../../context/AuthContext";
+import { useAuth } from '../../../../context/AuthContext';
 
-import {
-  login as loginApi,
-  getCurrentUser,
-} from "../../services/authService";
+import { login as loginApi, getCurrentUser } from '../../services/authService';
 
-import {
-  loginSchema,
-  type LoginFormData,
-} from "./login.schema";
+import { loginSchema, type LoginFormData } from './login.schema';
 
-import PlainNavBar from "../../../../components/PlainNavBar/PlainNavBar";
-import NotificationToast from "../../../../components/NotificationToast/NotificationToast";
-import "./Login.css";
+import PlainNavBar from '../../../../components/PlainNavBar/PlainNavBar';
+import NotificationToast from '../../../../components/NotificationToast/NotificationToast';
+import './Login.css';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -51,38 +32,33 @@ export default function Login() {
 
   const { login } = useAuth();
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [notification, setNotification] = useState(() => {
     const state = location.state;
-    return (
-      typeof state === "object" &&
+    return typeof state === 'object' &&
       state !== null &&
-      "registrationNotification" in state &&
-      typeof state.registrationNotification === "string"
-    )
+      'registrationNotification' in state &&
+      typeof state.registrationNotification === 'string'
       ? state.registrationNotification
-      : "";
+      : '';
   });
 
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-      isSubmitting,
-    },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   useEffect(() => {
     const state = location.state;
     if (
-      typeof state !== "object" ||
+      typeof state !== 'object' ||
       state === null ||
-      !("registrationNotification" in state) ||
-      typeof state.registrationNotification !== "string"
+      !('registrationNotification' in state) ||
+      typeof state.registrationNotification !== 'string'
     ) {
       return;
     }
@@ -91,23 +67,20 @@ export default function Login() {
   }, [location.pathname, location.state, navigate]);
 
   const onSubmit = async (data: LoginFormData) => {
-    setError("");
+    setError('');
 
     try {
-      const response = await loginApi(
-        data.email,
-        data.password
-      );
+      const response = await loginApi(data.email, data.password);
 
       const currentUser = await getCurrentUser(response.jwtToken);
       login(response, currentUser);
 
-      navigate("/dashboard", { replace: true });
+      navigate('/dashboard', { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError("Login failed");
+        setError('Login failed');
       }
     }
   };
@@ -119,33 +92,21 @@ export default function Login() {
       {notification && (
         <NotificationToast
           message={notification}
-          onClose={() => setNotification("")}
+          onClose={() => setNotification('')}
         />
       )}
 
       {/* Login Form */}
-      <Container
-        fluid
-        className="login-page__content"
-      >
+      <Container fluid className="login-page__content">
         <Row className="h-100 justify-content-center align-items-center">
-          <Col
-            xs={11}
-            sm={8}
-            md={6}
-            lg={4}
-            xl={3}
-          >
+          <Col xs={11} sm={8} md={6} lg={4} xl={3}>
             <Card className="auth-card shadow">
               <Card.Body className="p-4">
-
                 {/* Header */}
                 <div className="text-center mb-4">
                   <h2>Welcome Back</h2>
 
-                  <p className="text-muted">
-                    Please login to continue
-                  </p>
+                  <p className="text-muted">Please login to continue</p>
                 </div>
 
                 {/* API Error */}
@@ -153,30 +114,21 @@ export default function Login() {
                   <Alert
                     variant="danger"
                     dismissible
-                    onClose={() => setError("")}
+                    onClose={() => setError('')}
                   >
                     {error}
                   </Alert>
                 )}
 
-                <Form
-                  onSubmit={handleSubmit(onSubmit)}
-                  noValidate
-                >
-
+                <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                   {/* Email */}
-                  <Form.Group
-                    className="mb-3"
-                    controlId="email"
-                  >
-                    <Form.Label>
-                      Email
-                    </Form.Label>
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Label>Email</Form.Label>
 
                     <Form.Control
                       type="email"
                       placeholder="Enter email"
-                      {...register("email")}
+                      {...register('email')}
                       isInvalid={!!errors.email}
                     />
 
@@ -186,18 +138,13 @@ export default function Login() {
                   </Form.Group>
 
                   {/* Password */}
-                  <Form.Group
-                    className="mb-3"
-                    controlId="password"
-                  >
-                    <Form.Label>
-                      Password
-                    </Form.Label>
+                  <Form.Group className="mb-3" controlId="password">
+                    <Form.Label>Password</Form.Label>
 
                     <Form.Control
                       type="password"
                       placeholder="Enter password"
-                      {...register("password")}
+                      {...register('password')}
                       isInvalid={!!errors.password}
                     />
 
@@ -207,9 +154,7 @@ export default function Login() {
                   </Form.Group>
 
                   <div className="text-end mb-3">
-                    <Link to="/forgot-password">
-                      Forgot password?
-                    </Link>
+                    <Link to="/forgot-password">Forgot password?</Link>
                   </div>
 
                   {/* Login Button */}
@@ -219,24 +164,16 @@ export default function Login() {
                     className="app-primary w-100"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting
-                      ? "Logging in..."
-                      : "Login"}
+                    {isSubmitting ? 'Logging in...' : 'Login'}
                   </Button>
-
                 </Form>
 
                 {/* Registration Link */}
                 <div className="text-center mt-4">
-                  <span className="text-muted">
-                    Don't have an account?{" "}
-                  </span>
+                  <span className="text-muted">Don't have an account? </span>
 
-                  <Link to="/register">
-                    Create an account
-                  </Link>
+                  <Link to="/register">Create an account</Link>
                 </div>
-
               </Card.Body>
             </Card>
           </Col>

@@ -1,12 +1,9 @@
 ﻿export class ApiError extends Error {
   public readonly status: number;
 
-  constructor(
-    message: string,
-    status: number,
-  ) {
+  constructor(message: string, status: number) {
     super(message);
-    this.name = "ApiError";
+    this.name = 'ApiError';
     this.status = status;
   }
 }
@@ -14,10 +11,10 @@
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
 
 if (!configuredApiBaseUrl) {
-  throw new Error("VITE_API_BASE_URL must be configured");
+  throw new Error('VITE_API_BASE_URL must be configured');
 }
 
-const API_BASE_URL = configuredApiBaseUrl.replace(/\/+$/, "");
+const API_BASE_URL = configuredApiBaseUrl.replace(/\/+$/, '');
 
 interface ApiRequestOptions extends RequestInit {
   token?: string | null;
@@ -25,19 +22,18 @@ interface ApiRequestOptions extends RequestInit {
 
 export const apiRequest = async <T>(
   path: string,
-  options: ApiRequestOptions = {},
+  options: ApiRequestOptions = {}
 ): Promise<T | undefined> => {
   const { token, headers: requestHeaders, body, ...requestOptions } = options;
   const headers = new Headers(requestHeaders);
-  const authToken =
-    token === undefined ? localStorage.getItem("token") : token;
+  const authToken = token === undefined ? localStorage.getItem('token') : token;
 
-  if (body !== undefined && !headers.has("Content-Type")) {
-    headers.set("Content-Type", "application/json");
+  if (body !== undefined && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
   }
 
   if (authToken) {
-    headers.set("Authorization", `Bearer ${authToken}`);
+    headers.set('Authorization', `Bearer ${authToken}`);
   }
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -48,16 +44,16 @@ export const apiRequest = async <T>(
   const responseText = await response.text();
 
   if (!response.ok) {
-    let message = response.statusText || "Request failed";
+    let message = response.statusText || 'Request failed';
 
     if (responseText) {
       try {
         const errorBody: unknown = JSON.parse(responseText);
         if (
-          typeof errorBody === "object" &&
+          typeof errorBody === 'object' &&
           errorBody !== null &&
-          "message" in errorBody &&
-          typeof errorBody.message === "string"
+          'message' in errorBody &&
+          typeof errorBody.message === 'string'
         ) {
           message = errorBody.message;
         } else {

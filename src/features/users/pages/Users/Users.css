@@ -27,8 +27,7 @@
 .users-card {
   border-radius: 14px;
 
-  box-shadow:
-    0 2px 12px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
 }
 
 .users-card .card-body {
@@ -266,7 +265,8 @@
 
 .users-table thead th {
   padding: 14px 12px;
-  border-bottom: 1px solid color-mix(in srgb, var(--app-primary) 18%, var(--app-border));
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--app-primary) 18%, var(--app-border));
   background: color-mix(in srgb, var(--app-primary) 6%, var(--app-surface));
   color: var(--app-muted);
   font-size: 0.68rem;

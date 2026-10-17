@@ -1,6 +1,6 @@
-export type UserRole = "user" | "admin";
-export type UserStatus = "active" | "inactive";
-export type UserSortOrder = "asc" | "desc";
+export type UserRole = 'user' | 'admin';
+export type UserStatus = 'active' | 'inactive';
+export type UserSortOrder = 'asc' | 'desc';
 
 export interface UsersQueryParams {
   page?: number;

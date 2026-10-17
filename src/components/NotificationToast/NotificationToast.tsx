@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
-import "./NotificationToast.css";
+import './NotificationToast.css';
 
 interface NotificationToastProps {
   message: string;
@@ -31,9 +31,9 @@ export default function NotificationToast({
       role="status"
       aria-live="polite"
       style={{
-        position: "fixed",
-        top: "80px",
-        right: "16px",
+        position: 'fixed',
+        top: '80px',
+        right: '16px',
         zIndex: 2000,
       }}
     >
@@ -56,6 +56,6 @@ export default function NotificationToast({
         />
       </div>
     </div>,
-    document.body,
+    document.body
   );
 }

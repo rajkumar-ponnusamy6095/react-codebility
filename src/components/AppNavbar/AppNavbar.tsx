@@ -1,11 +1,11 @@
-import { Navbar, Container, Button, Alert } from "react-bootstrap";
+import { Navbar, Container, Button, Alert } from 'react-bootstrap';
 
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from 'react-router';
 
-import { useAuth } from "../../context/AuthContext";
-import { useState } from "react";
-import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
-import "./AppNavbar.css";
+import { useAuth } from '../../context/AuthContext';
+import { useState } from 'react';
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
+import './AppNavbar.css';
 
 interface AppNavbarProps {
   sidebarOpen?: boolean;
@@ -17,21 +17,19 @@ export default function AppNavbar({
   onSidebarToggle,
 }: AppNavbarProps) {
   const navigate = useNavigate();
-  const [logoutError, setLogoutError] = useState("");
+  const [logoutError, setLogoutError] = useState('');
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   const { user, logout } = useAuth();
 
   const handleLogout = async () => {
-    setLogoutError("");
+    setLogoutError('');
 
     try {
       await logout();
-      navigate("/login");
+      navigate('/login');
     } catch (error) {
-      setLogoutError(
-        error instanceof Error ? error.message : "Logout failed",
-      );
+      setLogoutError(error instanceof Error ? error.message : 'Logout failed');
     }
   };
 
@@ -40,7 +38,7 @@ export default function AppNavbar({
       <Navbar
         expand="md"
         fixed="top"
-        className={`app-navbar${onSidebarToggle ? " dashboard-navbar" : ""}${sidebarOpen ? " sidebar-open" : ""}`}
+        className={`app-navbar${onSidebarToggle ? ' dashboard-navbar' : ''}${sidebarOpen ? ' sidebar-open' : ''}`}
       >
         <Container fluid={Boolean(onSidebarToggle)}>
           {onSidebarToggle && (
@@ -48,7 +46,7 @@ export default function AppNavbar({
               variant="link"
               className="sidebar-toggle"
               type="button"
-              aria-label={sidebarOpen ? "Hide sidebar" : "Show sidebar"}
+              aria-label={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
               aria-controls="dashboard-sidebar"
               aria-expanded={sidebarOpen}
               onClick={onSidebarToggle}
@@ -74,17 +72,51 @@ export default function AppNavbar({
             <div className="app-navbar-actions ms-auto">
               {user?.name && (
                 <div className="app-profile-menu">
-                  <button type="button" className="app-navbar-user" aria-label="Open profile menu" aria-expanded={profileMenuOpen} onClick={() => setProfileMenuOpen((open) => !open)} title={user.name}>
-                  <span className="app-navbar-avatar" aria-hidden="true">
-                    {user.name.charAt(0).toUpperCase()}
-                  </span>
-                  <span className="app-navbar-name">{user.name}</span>
-                  <i className="bi bi-chevron-down app-profile-chevron" aria-hidden="true" />
+                  <button
+                    type="button"
+                    className="app-navbar-user"
+                    aria-label="Open profile menu"
+                    aria-expanded={profileMenuOpen}
+                    onClick={() => setProfileMenuOpen((open) => !open)}
+                    title={user.name}
+                  >
+                    <span className="app-navbar-avatar" aria-hidden="true">
+                      {user.name.charAt(0).toUpperCase()}
+                    </span>
+                    <span className="app-navbar-name">{user.name}</span>
+                    <i
+                      className="bi bi-chevron-down app-profile-chevron"
+                      aria-hidden="true"
+                    />
                   </button>
-                  {profileMenuOpen && <div className="app-profile-dropdown" aria-label="Profile menu">
-                    <div className="app-profile-summary"><span className="app-profile-dropdown-avatar">{user.name.charAt(0).toUpperCase()}</span><span className="app-profile-summary-copy"><strong>{user.name}</strong>{user.email && <small>{user.email}</small>}</span></div>
-                    <Link to="/profile" className="app-profile-link" onClick={() => setProfileMenuOpen(false)}><i className="bi bi-person-circle" aria-hidden="true" /><span>Profile &amp; security</span><i className="bi bi-arrow-up-right ms-auto" aria-hidden="true" /></Link>
-                  </div>}
+                  {profileMenuOpen && (
+                    <div
+                      className="app-profile-dropdown"
+                      aria-label="Profile menu"
+                    >
+                      <div className="app-profile-summary">
+                        <span className="app-profile-dropdown-avatar">
+                          {user.name.charAt(0).toUpperCase()}
+                        </span>
+                        <span className="app-profile-summary-copy">
+                          <strong>{user.name}</strong>
+                          {user.email && <small>{user.email}</small>}
+                        </span>
+                      </div>
+                      <Link
+                        to="/profile"
+                        className="app-profile-link"
+                        onClick={() => setProfileMenuOpen(false)}
+                      >
+                        <i className="bi bi-person-circle" aria-hidden="true" />
+                        <span>Profile &amp; security</span>
+                        <i
+                          className="bi bi-arrow-up-right ms-auto"
+                          aria-hidden="true"
+                        />
+                      </Link>
+                    </div>
+                  )}
                 </div>
               )}
               <ThemeSwitcher />
@@ -108,7 +140,7 @@ export default function AppNavbar({
           className="mb-0"
           role="alert"
           dismissible
-          onClose={() => setLogoutError("")}
+          onClose={() => setLogoutError('')}
         >
           {logoutError}
         </Alert>
