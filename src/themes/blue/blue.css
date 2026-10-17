@@ -1,0 +1,15 @@
+[data-theme='blue'] {
+  --app-primary: #3b82f6;
+  --app-primary-dark: #1d4ed8;
+  --app-primary-light: #dbeafe;
+  --app-secondary: #6c757d;
+  --app-success: #198754;
+  --app-info: #0dcaf0;
+  --app-warning: #ffc107;
+  --app-danger: #dc3545;
+  --app-light: #f8f9fa;
+  --app-dark: #212529;
+  --bs-primary-rgb: 59, 130, 246;
+  --app-gradient-start: #3b82f6;
+  --app-gradient-end: #06b6d4;
+}

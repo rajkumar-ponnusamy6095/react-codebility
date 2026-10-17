@@ -1,0 +1,15 @@
+[data-theme='orange'] {
+  --app-primary: #f97316;
+  --app-primary-dark: #c2410c;
+  --app-primary-light: #ffedd5;
+  --app-secondary: #6c757d;
+  --app-success: #198754;
+  --app-info: #0dcaf0;
+  --app-warning: #ffc107;
+  --app-danger: #dc3545;
+  --app-light: #f8f9fa;
+  --app-dark: #212529;
+  --bs-primary-rgb: 249, 115, 22;
+  --app-gradient-start: #f97316;
+  --app-gradient-end: #fbbf24;
+}

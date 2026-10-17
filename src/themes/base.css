@@ -1,0 +1,189 @@
+:root {
+  --app-font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  --app-primary: #3b82f6;
+  --app-primary-dark: #1d4ed8;
+  --app-primary-light: #dbeafe;
+
+  --app-secondary: #6c757d;
+  --app-success: #198754;
+  --app-info: #0dcaf0;
+  --app-warning: #ffc107;
+  --app-danger: #dc3545;
+  --app-light: #f8f9fa;
+  --app-dark: #212529;
+
+  --app-gradient-start: #3b82f6;
+  --app-gradient-end: #06b6d4;
+
+  --app-bg: #f8fafc;
+  --app-text: #1e293b;
+  --app-surface: #ffffff;
+  --app-border: #e2e8f0;
+  --app-muted: #64748b;
+  --app-card-bg: var(--app-surface);
+  --app-table-header-bg: color-mix(
+    in srgb,
+    var(--app-primary-dark) 45%,
+    #1e293b
+  );
+  --app-table-header-color: #f8fafc;
+  --app-table-header-border: color-mix(
+    in srgb,
+    var(--app-table-header-bg) 80%,
+    #000
+  );
+
+  --bs-primary: var(--app-primary);
+  --bs-primary-rgb: 59, 130, 246;
+  --bs-primary-text-emphasis: var(--app-primary-dark);
+  --bs-primary-bg-subtle: var(--app-primary-light);
+  --bs-primary-border-subtle: color-mix(
+    in srgb,
+    var(--app-primary) 35%,
+    #fff
+  );
+  --bs-secondary: var(--app-secondary);
+  --bs-secondary-rgb: 108, 117, 125;
+  --bs-success: var(--app-success);
+  --bs-success-rgb: 25, 135, 84;
+  --bs-info: var(--app-info);
+  --bs-info-rgb: 13, 202, 240;
+  --bs-warning: var(--app-warning);
+  --bs-warning-rgb: 255, 193, 7;
+  --bs-danger: var(--app-danger);
+  --bs-danger-rgb: 220, 53, 69;
+  --bs-light: var(--app-light);
+  --bs-light-rgb: 248, 249, 250;
+  --bs-dark: var(--app-dark);
+  --bs-dark-rgb: 33, 37, 41;
+}
+
+/* Bootstrap's compiled button rules contain literal colors, so map them to
+   the active theme tokens just like the utility and alert rules do. */
+[data-theme] .btn-primary,
+[data-theme] .btn-secondary,
+[data-theme] .btn-success,
+[data-theme] .btn-info,
+[data-theme] .btn-warning,
+[data-theme] .btn-danger,
+[data-theme] .btn-light,
+[data-theme] .btn-dark {
+  --bs-btn-color: var(--app-button-color);
+  --bs-btn-bg: var(--app-button-bg);
+  --bs-btn-border-color: var(--app-button-bg);
+  --bs-btn-hover-color: var(--app-button-color);
+  --bs-btn-hover-bg: var(--app-button-hover-bg);
+  --bs-btn-hover-border-color: var(--app-button-hover-bg);
+  --bs-btn-active-color: var(--app-button-color);
+  --bs-btn-active-bg: var(--app-button-hover-bg);
+  --bs-btn-active-border-color: var(--app-button-hover-bg);
+  --bs-btn-disabled-color: var(--app-button-color);
+  --bs-btn-disabled-bg: var(--app-button-bg);
+  --bs-btn-disabled-border-color: var(--app-button-bg);
+}
+
+[data-theme] .btn-primary {
+  --app-button-color: #fff;
+  --app-button-bg: var(--app-primary);
+  --app-button-hover-bg: var(--app-primary-dark);
+}
+
+[data-theme] .btn-secondary {
+  --app-button-color: #fff;
+  --app-button-bg: var(--app-secondary);
+  --app-button-hover-bg: color-mix(in srgb, var(--app-secondary) 85%, #000);
+}
+
+[data-theme] .btn-success {
+  --app-button-color: #fff;
+  --app-button-bg: var(--app-success);
+  --app-button-hover-bg: color-mix(in srgb, var(--app-success) 85%, #000);
+}
+
+[data-theme] .btn-info {
+  --app-button-color: #000;
+  --app-button-bg: var(--app-info);
+  --app-button-hover-bg: color-mix(in srgb, var(--app-info) 85%, #000);
+}
+
+[data-theme] .btn-warning {
+  --app-button-color: #000;
+  --app-button-bg: var(--app-warning);
+  --app-button-hover-bg: color-mix(in srgb, var(--app-warning) 85%, #000);
+}
+
+[data-theme] .btn-danger {
+  --app-button-color: #fff;
+  --app-button-bg: var(--app-danger);
+  --app-button-hover-bg: color-mix(in srgb, var(--app-danger) 85%, #000);
+}
+
+[data-theme] .btn-light {
+  --app-button-color: #000;
+  --app-button-bg: var(--app-light);
+  --app-button-hover-bg: color-mix(in srgb, var(--app-light) 85%, #000);
+}
+
+[data-theme] .btn-dark {
+  --app-button-color: #fff;
+  --app-button-bg: var(--app-dark);
+  --app-button-hover-bg: color-mix(in srgb, var(--app-dark) 85%, #000);
+}
+
+[data-theme] .btn-outline-primary,
+[data-theme] .btn-outline-secondary,
+[data-theme] .btn-outline-success,
+[data-theme] .btn-outline-info,
+[data-theme] .btn-outline-warning,
+[data-theme] .btn-outline-danger,
+[data-theme] .btn-outline-light,
+[data-theme] .btn-outline-dark {
+  --bs-btn-color: var(--app-outline-color);
+  --bs-btn-border-color: var(--app-outline-color);
+  --bs-btn-hover-color: var(--app-outline-hover-color);
+  --bs-btn-hover-bg: var(--app-outline-color);
+  --bs-btn-hover-border-color: var(--app-outline-color);
+  --bs-btn-active-color: var(--app-outline-hover-color);
+  --bs-btn-active-bg: var(--app-outline-color);
+  --bs-btn-active-border-color: var(--app-outline-color);
+}
+
+[data-theme] .btn-outline-primary {
+  --app-outline-color: var(--app-primary);
+  --app-outline-hover-color: #fff;
+}
+
+[data-theme] .btn-outline-secondary {
+  --app-outline-color: var(--app-secondary);
+  --app-outline-hover-color: #fff;
+}
+
+[data-theme] .btn-outline-success {
+  --app-outline-color: var(--app-success);
+  --app-outline-hover-color: #fff;
+}
+
+[data-theme] .btn-outline-info {
+  --app-outline-color: var(--app-info);
+  --app-outline-hover-color: #000;
+}
+
+[data-theme] .btn-outline-warning {
+  --app-outline-color: var(--app-warning);
+  --app-outline-hover-color: #000;
+}
+
+[data-theme] .btn-outline-danger {
+  --app-outline-color: var(--app-danger);
+  --app-outline-hover-color: #fff;
+}
+
+[data-theme] .btn-outline-light {
+  --app-outline-color: var(--app-light);
+  --app-outline-hover-color: #000;
+}
+
+[data-theme] .btn-outline-dark {
+  --app-outline-color: var(--app-dark);
+  --app-outline-hover-color: #fff;
+}

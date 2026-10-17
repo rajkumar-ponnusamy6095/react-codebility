@@ -7,12 +7,14 @@ interface NotificationToastProps {
   message: string;
   onClose: () => void;
   duration?: number;
+  variant?: 'success' | 'info' | 'warning' | 'danger';
 }
 
 export default function NotificationToast({
   message,
   onClose,
   duration = 10_000,
+  variant = 'success',
 }: NotificationToastProps) {
   const onCloseRef = useRef(onClose);
 
@@ -27,7 +29,7 @@ export default function NotificationToast({
 
   return createPortal(
     <div
-      className="notification-toast"
+      className={`notification-toast notification-toast--${variant}`}
       role="status"
       aria-live="polite"
       style={{
@@ -38,7 +40,18 @@ export default function NotificationToast({
       }}
     >
       <div className="notification-toast-content">
-        <i className="bi bi-check-circle-fill" aria-hidden="true" />
+        <i
+          className={`bi bi-${
+            variant === 'success'
+              ? 'check-circle-fill'
+              : variant === 'info'
+                ? 'info-circle-fill'
+                : variant === 'warning'
+                  ? 'exclamation-triangle-fill'
+                  : 'x-circle-fill'
+          }`}
+          aria-hidden="true"
+        />
         <span>{message}</span>
       </div>
       <button

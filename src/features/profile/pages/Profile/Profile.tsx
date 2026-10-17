@@ -402,7 +402,8 @@ export default function Profile() {
                     <div className="profile-form-actions">
                       <Button
                         type="button"
-                        className="profile-cancel-button"
+                        variant="secondary"
+                        className="app-cancel-button"
                         disabled={isSubmitting}
                         onClick={cancelEditing}
                       >

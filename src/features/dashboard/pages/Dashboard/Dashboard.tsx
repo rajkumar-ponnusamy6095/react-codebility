@@ -75,7 +75,7 @@ export default function Dashboard() {
           <span className="dashboard-eyebrow">WORKSPACE OVERVIEW</span>
           <h1>Welcome to your dashboard</h1>
           <p>Keep your people and workspace moving in the right direction.</p>
-          <Link to="/users" className="btn dashboard-hero__button">
+          <Link to="/users" className="btn app-primary dashboard-hero__button">
             <i className="bi bi-people me-2" aria-hidden="true" />
             Manage users
           </Link>

@@ -117,6 +117,7 @@ export default function UserForm() {
       navigate('/users', {
         state: {
           userNotification: `User "${savedUser.name}" ${action} successfully.`,
+          userNotificationVariant: isEditing ? 'info' : 'success',
         },
       });
     } catch (error) {
@@ -328,6 +329,7 @@ export default function UserForm() {
               <div className="d-flex justify-content-end gap-2">
                 <Button
                   variant="secondary"
+                  className="app-cancel-button"
                   onClick={() => navigate('/users')}
                   disabled={isSubmitting}
                 >

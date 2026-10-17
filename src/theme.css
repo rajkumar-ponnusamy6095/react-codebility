@@ -1,78 +1,11 @@
-:root {
-  --app-font-family: 'DM Sans', 'Segoe UI', sans-serif;
-  --app-primary: #2563eb;
-  --app-primary-dark: #1d4ed8;
-  --app-primary-light: #dbeafe;
-
-  --app-gradient-start: #2563eb;
-  --app-gradient-end: #06b6d4;
-
-  --app-bg: #f8fafc;
-  --app-text: #1e293b;
-  --app-surface: #ffffff;
-  --app-border: #e2e8f0;
-  --app-muted: #64748b;
-  --app-card-bg: var(--app-surface);
-  --app-table-header-bg: color-mix(
-    in srgb,
-    var(--app-primary-dark) 45%,
-    #1e293b
-  );
-  --app-table-header-color: #f8fafc;
-  --app-table-header-border: color-mix(
-    in srgb,
-    var(--app-table-header-bg) 80%,
-    #000
-  );
-}
-
-[data-theme='blue'] {
-  --app-primary: #2563eb;
-  --app-primary-dark: #1d4ed8;
-  --app-primary-light: #dbeafe;
-  --app-gradient-start: #2563eb;
-  --app-gradient-end: #06b6d4;
-}
-
-[data-theme='orange'] {
-  --app-primary: #f97316;
-  --app-primary-dark: #ea580c;
-  --app-primary-light: #ffedd5;
-  --app-gradient-start: #f97316;
-  --app-gradient-end: #f59e0b;
-}
-
-[data-theme='pink'] {
-  --app-primary: #ec4899;
-  --app-primary-dark: #db2777;
-  --app-primary-light: #fce7f3;
-  --app-gradient-start: #ec4899;
-  --app-gradient-end: #f43f5e;
-}
-
-[data-theme='green'] {
-  --app-primary: #10b981;
-  --app-primary-dark: #059669;
-  --app-primary-light: #d1fae5;
-  --app-gradient-start: #10b981;
-  --app-gradient-end: #14b8a6;
-}
-
-[data-theme='yellow'] {
-  --app-primary: #eab308;
-  --app-primary-dark: #ca8a04;
-  --app-primary-light: #fef9c3;
-  --app-gradient-start: #eab308;
-  --app-gradient-end: #f59e0b;
-}
-
-[data-theme='violet'] {
-  --app-primary: #8b5cf6;
-  --app-primary-dark: #7c3aed;
-  --app-primary-light: #ede9fe;
-  --app-gradient-start: #8b5cf6;
-  --app-gradient-end: #6366f1;
-}
+@import './themes/base.css';
+@import './themes/blue/blue.css';
+@import './themes/orange/orange.css';
+@import './themes/pink/pink.css';
+@import './themes/green/green.css';
+@import './themes/yellow/yellow.css';
+@import './themes/violet/violet.css';
+@import './themes/black/black.css';
 
 body {
   margin: 0;
@@ -305,22 +238,18 @@ a:hover {
 }
 
 .notification-toast {
-  border: 1px solid color-mix(in srgb, var(--app-gradient-end) 70%, #fff);
-  background: linear-gradient(
-    135deg,
-    var(--app-gradient-start),
-    var(--app-gradient-end)
-  );
-  color: #f8fafc;
+  border: 1px solid color-mix(in srgb, var(--notification-toast-bg) 70%, #fff);
+  background: var(--notification-toast-bg);
+  color: var(--notification-toast-fg);
   box-shadow: 0 12px 32px
-    color-mix(in srgb, var(--app-primary-dark) 35%, transparent);
+    color-mix(in srgb, var(--notification-toast-bg) 35%, transparent);
 }
 
 .notification-toast-content i,
 .notification-toast-close,
 .notification-toast-close:hover,
 .notification-toast-close:focus-visible {
-  color: #fff;
+  color: var(--notification-toast-fg);
 }
 
 .notification-toast-close,
@@ -335,11 +264,23 @@ a:hover {
 }
 
 .notification-toast-progress {
-  background: color-mix(in srgb, #fff 30%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--notification-toast-fg) 30%,
+    transparent
+  );
 }
 
 .notification-toast-progress-bar {
-  background: #fff;
+  background: var(--notification-toast-fg);
+}
+
+.app-cancel-button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 9px;
+  font-size: 0.81rem;
+  font-weight: 680;
 }
 
 .auth-card {

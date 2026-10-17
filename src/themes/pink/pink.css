@@ -1,0 +1,15 @@
+[data-theme='pink'] {
+  --app-primary: #ec4899;
+  --app-primary-dark: #be185d;
+  --app-primary-light: #fce7f3;
+  --app-secondary: #6c757d;
+  --app-success: #198754;
+  --app-info: #0dcaf0;
+  --app-warning: #ffc107;
+  --app-danger: #dc3545;
+  --app-light: #f8f9fa;
+  --app-dark: #212529;
+  --bs-primary-rgb: 236, 72, 153;
+  --app-gradient-start: #ec4899;
+  --app-gradient-end: #f43f5e;
+}

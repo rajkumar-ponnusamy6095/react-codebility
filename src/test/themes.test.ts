@@ -5,6 +5,6 @@ describe('themes', () => {
   it('exposes the default and registered themes', () => {
     expect(DEFAULT_THEME).toBe('blue');
     expect(themes.blue.label).toBe('Azure');
-    expect(Object.keys(themes)).toHaveLength(6);
+    expect(Object.keys(themes)).toHaveLength(7);
   });
 });

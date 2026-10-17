@@ -31,6 +31,7 @@ import './Users.css';
 
 type SortField = keyof User;
 type SortDirection = UserSortOrder;
+type NotificationVariant = 'success' | 'info' | 'warning' | 'danger';
 
 const PAGE_SIZE_OPTIONS = [5, 10, 25, 100] as const;
 
@@ -74,7 +75,10 @@ export default function Users() {
     'id' | 'name'
   > | null>(null);
 
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState<{
+    message: string;
+    variant: NotificationVariant;
+  } | null>(null);
 
   useEffect(() => {
     const state = location.state;
@@ -82,14 +86,18 @@ export default function Users() {
       typeof state !== 'object' ||
       state === null ||
       !('userNotification' in state) ||
-      typeof state.userNotification !== 'string'
+      typeof state.userNotification !== 'string' ||
+      ('userNotificationVariant' in state &&
+        typeof state.userNotificationVariant !== 'string')
     ) {
       return;
     }
 
     // Consume the one-time notification passed through router state.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setNotification(state.userNotification);
+    const variant =
+      state.userNotificationVariant === 'info' ? 'info' : 'success';
+    setNotification({ message: state.userNotification, variant });
     navigate(location.pathname, { replace: true, state: null });
   }, [location.pathname, location.state, navigate]);
 
@@ -225,7 +233,10 @@ export default function Users() {
 
       await deleteUser(userToDelete.id);
       setUserToDelete(null);
-      setNotification(`User "${userToDelete.name}" deleted successfully.`);
+      setNotification({
+        message: `User "${userToDelete.name}" deleted successfully.`,
+        variant: 'danger',
+      });
 
       const newTotalPages = Math.max(
         1,
@@ -321,8 +332,9 @@ export default function Users() {
 
       {notification && (
         <NotificationToast
-          message={notification}
-          onClose={() => setNotification('')}
+          message={notification.message}
+          variant={notification.variant}
+          onClose={() => setNotification(null)}
         />
       )}
 
@@ -598,7 +610,11 @@ export default function Users() {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setUserToDelete(null)}>
+          <Button
+            variant="secondary"
+            className="app-cancel-button"
+            onClick={() => setUserToDelete(null)}
+          >
             Cancel
           </Button>
 

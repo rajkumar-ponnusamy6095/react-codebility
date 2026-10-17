@@ -8,6 +8,26 @@
   font-size: 0.9rem;
 }
 
+.notification-toast--success {
+  --notification-toast-bg: var(--app-success);
+  --notification-toast-fg: #fff;
+}
+
+.notification-toast--info {
+  --notification-toast-bg: var(--app-info);
+  --notification-toast-fg: #000;
+}
+
+.notification-toast--warning {
+  --notification-toast-bg: var(--app-warning);
+  --notification-toast-fg: #000;
+}
+
+.notification-toast--danger {
+  --notification-toast-bg: var(--app-danger);
+  --notification-toast-fg: #fff;
+}
+
 .notification-toast-content {
   display: flex;
   align-items: center;
